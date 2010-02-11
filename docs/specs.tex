@@ -1,0 +1,136 @@
+%
+% Specifications
+%
+% sound evolution project
+%
+
+\documentclass[a4paper,12pt,oneside]{article}
+
+\usepackage[utf8x]{inputenc}
+
+\begin{document}
+
+\begin{titlepage}
+  \begin{center}
+    {\huge\bf Sound Evolution} \\
+    \Large
+    Specifications \\
+    \vfill
+    \normalsize
+    \today \\
+    \vspace{5em}
+    Duncan Blythe \\
+    Mirko Dietrich \\
+    Stephan Gabler \\
+    Matthias Gloel \\
+    Rafael Schultze-Kraft \\
+    \vspace{2em}
+    Bernstein Center for Computational Neuroscience Berlin
+  \end{center}
+\end{titlepage}
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+The aim of the project is to develop a framework of programs and
+libraries that evolve sound or music fragments based upon on a
+user-driven fitness function.
+
+\section{System overview}
+
+Sound files are automatically produced by the software using a
+description language. An interpreter transforms sound description into
+wave data. This language forms the sound genes. A single sound
+fragment is described by a sequence of this sound language.
+
+Two sounds can mate by recombining their genes. New sounds evolve
+using two basic operations:
+
+\begin{itemize}
+\item \textbf{Cross-over:} Recombine existing genes
+\item \textbf{Mutation:} Randomly alter individual genes
+\end{itemize}
+
+Candidates for recombination are selected using a fitness
+function. Since it is difficult to evaluate the esthetics of music
+automatically we aim for a human-driven fitness function. That means
+users can listen to sound fragments and select candidates based on
+their choice.
+
+The first generation of sounds can be either randomly generated or a
+reasonable set of default individuals should be provided.
+
+\section{Design considerations}
+
+\subsection{Dependencies}
+
+We don't have to reinvent the wheel. Several aspects of the software
+can be accomplished by external libraries and programs. Doing so saves
+us development resources. We can rely on tested software and focus on
+our own project features.
+
+\subsubsection*{Description language}
+
+Sound fragments consist of a sequence of descriptive elements. These
+are subject to mutation and recombination. These operations should
+always yield syntactic correct representations. A language could
+consist of one part defining a set of instruments and another part of
+describing a sequence of occurences of notes or similar.
+
+\subsubsection*{Interpreter and synthesizer}
+
+An interpretor translates a sound description into audio data that can
+be saved e.g. as a WAV or AIFF file. For doing so it has to parse the
+description language and finally synthesize audio using a software
+sound library.
+
+\subsection{General constraints}
+
+\subsubsection*{Fitness function}
+
+The fitness function is user dependent. This means the amount of
+cycles may be limited by the human.
+
+\subsection{User interface}
+
+Command line tools can be used to interact on sound description
+fragments.
+
+\subsection{Development methods}
+
+\subsubsection*{Programming languages}
+
+The software will be implemented using the Python programming
+language. Other libraries may use other programming languages but
+should provide Python bindings whenever neccessary.
+
+\subsubsection*{Developing tools}
+
+A version control system will be used to track development. GitHub is
+providing hosting and project management services:
+
+\begin{itemize}
+\item Git version control
+\item Wiki
+\item Issue tracker
+\end{itemize}
+
+\section{Prospects}
+
+\subsection{Web-based frontend}
+
+Ideally a web-based frontend can be provided to reach an amount of
+users providing feedback for the fitness function. The system could
+implement the following features:
+
+\begin{itemize}
+\item Create new sound fragments (either random or from default)
+\item Evolve fragments
+\item Sound gallery
+\item Rating
+\end{itemize}
+
+\end{document}

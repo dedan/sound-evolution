@@ -1,0 +1,56 @@
+
+[
+{
+	"name": "oscil",
+	"type": "code",
+	"symbol": "oscil",
+	"outtype": "a",
+	"params": [
+		{"name": "amp", "type": "x", "min": 0, "max": 1},
+		{"name": "freq", "type": "x", "min": 20, "max": 20000},
+		{"name": "table", "type": "i", "min": 1, "max": 1}
+	]
+},
+
+{
+	"name": "lfo",
+	"symbol": "lfo",
+	"type": "code",
+	"outtype": "x",
+	"params": [
+		{"name": "amp", "type": "x", "min": 0, "max": 1},
+		{"name": "freq", "type": "x", "min": 0, "max": 20},	
+		{"name": "waveform", "type": "i", "min": 0, "max": 5}
+	]
+},
+
+{
+	"name": "mult",
+	"type": "math",
+	"symbol": "*",
+	"outtype": "x"
+},
+
+{
+	"name": "add",
+	"type": "math",
+	"symbol": "+",
+	"outtype": "x"
+},
+
+{
+	"name": "div",
+	"type": "math",
+	"symbol": "/",
+	"outtype": "x"
+},
+
+{
+	"name": "add",
+	"type": "math",
+	"symbol": "+",
+	"outtype": "x"
+}
+
+
+]

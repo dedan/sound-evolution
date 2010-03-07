@@ -14,7 +14,6 @@ max_rand_const = 100
 
 
 
-
 # create tree function.
 # -start from the root
 # -choose an opcode
@@ -39,23 +38,41 @@ class Tree:
 	"""a class for representing the genome tree"""
 	
 	def __init__(self, code):
+		"""Constructor
+			code describes an opcode 
+		"""
 		self.code = code
 		self.sons = []
 		
-	def only_const(self):
-		"""all sons are constant values?"""
-		res = True
-		for son in self.sons:
-			if son.code["name"] != "const":
-				res = False
-		return res
+		
+	def to_csound(self):
+		"""tree to csound compilation"""
+		csound_code = ""
+		data 		= []
+		for son in n.sons:
+			(code, data) 	= son.to_csound
+			csound_code 	+= code
+			data 			+= data
+		return n.render(data)
 		
 		
+		
+	def to_json(self):
+		"""generate a json file for a python tree object"""
+		pass
+		
+	def from_json(self):
+		"""create a python tree object from a json document"""
+		pass
+
+
 def get_only_type(the_type, opcodes):
 	"""get only opcodes the have output of the_type"""
 	return [op for op in opcodes if op["outtype"] == the_type]
-	
-	
+
+
+
+		
 	
 if __name__ == '__main__':
 	
@@ -98,16 +115,9 @@ if __name__ == '__main__':
 					
 	# tree to code
 	
-
-	# out = []
-	# queu = deque([root])
-	# 
-	# while queu:
-	# 	tmp = queu.popleft()
-	# 	out.append(tmp.code["name"])
-	# 	queu.extend(tmp.sons)
-	# 	
-	# print out
+	
+	to_csound(root)
+		
 			
 	
 					

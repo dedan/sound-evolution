@@ -17,3 +17,4 @@ ThumbsDB
 *syctex.gz
 *toc
 *pdf
+*.egg-info

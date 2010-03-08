@@ -1,8 +1,18 @@
 """Test Instrument class."""
 
+import os
 import nose.tools
 
 import sound_evolution as se
+
+def setup():
+    global simple_json, invalid_json
+    simple_json = open(
+        os.path.join(os.path.dirname(__file__),
+                     "fixtures", "simple_instrument.json")).read()
+    invalid_json = open(
+        os.path.join(os.path.dirname(__file__),
+                     "fixtures", "invalid.json")).read()
 
 def test_create_empty():
     """Should create an empty instrument."""
@@ -11,9 +21,11 @@ def test_create_empty():
 
 def test_create_from_json():
     """Should create an instrument from JSON."""
-    i = se.instrument.Instrument("{'root': {}}")
+    global valid_json
+    i = se.instrument.Instrument(simple_json)
 
 @nose.tools.raises(ValueError)
 def test_create_from_json_fails():
     """Shouldn't create an instrument from invalid JSON."""
-    i = se.instrument.Instrument("{'root': {}")
+    global invalid_json
+    i = se.instrument.Instrument(invalid_json)

@@ -23,6 +23,7 @@ def test_create_from_json():
     """Should create an instrument from JSON."""
     global valid_json
     i = se.instrument.Instrument(simple_json)
+    assert(type(i) == se.instrument.Instrument)
 
 @nose.tools.raises(ValueError)
 def test_create_from_json_fails():

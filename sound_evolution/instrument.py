@@ -5,11 +5,12 @@ import abc
 import simplejson as json
 import random
 from collections import deque
+
 from genetics import Individual
 
 class Instrument(object):
     """A class representing the genome tree."""
-    
+
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string """
         if type(instrument_tree) is str:
@@ -17,13 +18,12 @@ class Instrument(object):
         else:
             self.instrument_tree = instrument_tree
 
-    
     def to_instr(self):
         """Generate csound ocr code."""
         n = 0
         (c, d, n) = self.__class__.__to_instr(self.instrument_tree, n)
         return c + "\n" + "out\ta%d" % n
-        
+
     @staticmethod
     def __to_instr(node, n):
         csound_code = ""
@@ -35,9 +35,8 @@ class Instrument(object):
             data += (d,)
             tmp_n += n
         (c, d, n) = Instrument.__render(node, data, tmp_n)
-        return (csound_code + "\n" + c, d, n) 
-    
-        
+        return (csound_code + "\n" + c, d, n)
+
     @staticmethod
     def __render(node, data, n):
         """render the code for a node"""
@@ -61,34 +60,34 @@ class Instrument(object):
         return
 
     def ficken(self, individual=None):
-		"""Cross a tree-instrument with another one."""
-		return
+        """Cross a tree-instrument with another one."""
+        return
 
     def fitness(self):
         """Score of the instrument."""
         return
-            
+
     @staticmethod
     def random(params):
         """create a random instrument"""
 
         const_probability = params.get("const_prob")
-        max_children = params.get("max_children")	    
-    
+        max_children = params.get("max_children")
+
         def get_only_type(the_type, opcodes):
-        	"""get only opcodes the have output of the_type"""
-        	return [op for op in opcodes if op["outtype"] == the_type]
-        
-        
+            """get only opcodes the have output of the_type"""
+            return [op for op in opcodes if op["outtype"] == the_type]
+
+
         # get list of available opcodes from json file_
         opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), "opcodes.json")).read())
 
-        # select random root element 
+        # select random root element
         # TODO maybe this has to be constrained to outtype="a" type
         root = Instrument.__make_node(random.choice(opcodes))
         todo = deque([root])
-        
-        # TODO this number has to be replaced by the may value of the opcode with 
+
+        # TODO this number has to be replaced by the may value of the opcode with
         # which it is used
         max_rand_const = 100
 
@@ -97,7 +96,7 @@ class Instrument(object):
 
             # if it is a math operator
             if tmp_tree["code"]["type"] == "math":
-                
+
                 n_children = random.randint(2, max_children)
                 for i in range(n_children):
                     if random.random() > const_probability:
@@ -108,7 +107,7 @@ class Instrument(object):
                         random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
-                    
+
             else:
                 for param in tmp_tree["code"]["params"]:
                     if random.random() > const_probability:
@@ -120,35 +119,36 @@ class Instrument(object):
                         random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
-        
+
         inst = Instrument()
         inst.instrument_tree = root
         return inst
-                
-    @staticmethod        
+
+    @staticmethod
     def __make_node(code):
         """Make a node with no children."""
         return { "code": code, "children": []}
-        
+
     @staticmethod
     def __make_const_code(val):
         """make a new constant"""
         return {"name": "const", "type": "const", "value": str(val)}
 
-	def mutate(self):
-		"""Mutate an instrument."""
-		return
+    def mutate(self):
+        """Mutate an instrument."""
+        return
 
-	def ficken(self, individual=None):
-		"""Cross a tree-instrument with another one."""
-		return
+    def ficken(self, individual=None):
+        """Cross a tree-instrument with another one."""
+        return
 
-	def fitness(self):
-		"""Score of the instrument."""
-		return
-   
+    def fitness(self):
+        """Score of the instrument."""
+        return
+
 Individual.register(Instrument)
-      
+
+
 if __name__ == '__main__':
     comp = open("../tests/fixtures/complex_instrument.json").read()
     i = Instrument(comp)

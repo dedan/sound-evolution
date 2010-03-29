@@ -1,5 +1,6 @@
 """A single csound instrument."""
 
+import os
 import abc
 import simplejson as json
 import random
@@ -41,8 +42,8 @@ class Instrument(object):
         	return [op for op in opcodes if op["outtype"] == the_type]
         
         
-        # get list of available opcodes from json file
-        opcodes = json.loads(file("opcodes.json").read())
+        # get list of available opcodes from json file_
+        opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), "opcodes.json")).read())
 
         # select random root element 
         # TODO maybe this has to be constrained to outtype="a" type
@@ -55,8 +56,6 @@ class Instrument(object):
 
         while todo:
             tmp_tree = todo.popleft()
-
-            print tmp_tree["code"]["name"]
 
             # if it is a math operator
             if tmp_tree["code"]["type"] == "math":

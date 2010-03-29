@@ -30,3 +30,11 @@ def test_create_from_json_fails():
     """Shouldn't create an instrument from invalid JSON."""
     global invalid_json
     i = se.instrument.Instrument(invalid_json)
+
+def test_create_rand_instr():
+    """Should create a random tree-instrument."""
+    i = se.instrument.Instrument.random(0.7, 4)
+    assert(type(i) == se.instrument.Instrument)
+    assert i.instrument_tree != None
+    
+    

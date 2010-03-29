@@ -1,9 +1,10 @@
 """A single csound instrument."""
 
+import abc
 import simplejson as json
 import random
 from collections import deque
-
+from genetics import Individual
 
 class Instrument(object):
     """A class representing the genome tree."""
@@ -31,10 +32,10 @@ class Instrument(object):
         """Serialize instrument to JSON."""
         return json.dumps(self.instrument_tree)
             
-    
-    def random(self, const_probability, max_children):
+    @staticmethod
+    def random(const_probability, max_children):
         """create a random instrument"""
-        
+	        
         def get_only_type(the_type, opcodes):
         	"""get only opcodes the have output of the_type"""
         	return [op for op in opcodes if op["outtype"] == the_type]
@@ -45,7 +46,7 @@ class Instrument(object):
 
         # select random root element 
         # TODO maybe this has to be constrained to outtype="a" type
-        root = self.__make_node(random.choice(opcodes))
+        root = Instrument.__make_node(random.choice(opcodes))
         todo = deque([root])
         
         # TODO this number has to be replaced by the may value of the opcode with 
@@ -63,11 +64,11 @@ class Instrument(object):
                 n_children = random.randint(2, max_children)
                 for i in range(n_children):
                     if random.random() > const_probability:
-                        random_node = self.__make_node(random.choice(opcodes))
+                        random_node = Instrument.__make_node(random.choice(opcodes))
                         todo.append(random_node)
                     else:
                         const_code = {"name": "const", "value": random.random() * max_rand_const}
-                        random_node = self.__make_node(const_code)
+                        random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
                     
@@ -75,21 +76,38 @@ class Instrument(object):
                 for param in tmp_tree["code"]["params"]:
                     if random.random() > const_probability:
                         filtered = get_only_type(param["type"], opcodes)
-                        random_node = self.__make_node(random.choice(opcodes))
-                        todo.append(random_opcode)
+                        random_node = Instrument.__make_node(random.choice(opcodes))
+                        todo.append(random_node)
                     else:
                         const_code = {"name": "const", "value": random.random() * max_rand_const}
-                        random_node = self.__make_node(const_code)
+                        random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
-        self.instrument_tree = root
-                
-                
-    def __make_node(self, code):
-        """make an node with no children"""
-        return { "code": code, "children": []}
         
+        inst = Instrument()
+        inst.instrument_tree = root
+        return inst
+                
+    @staticmethod         
+    def __make_node(code):
+        """Make a node with no children."""
+        return { "code": code, "children": []}
+
+	def mutate(self):
+		"""Mutate an instrument."""
+		return
+
+	def ficken(self, individual=None):
+		"""Cross a tree-instrument with another one."""
+		return
+
+	def fitness(self):
+		"""Score of the instrument."""
+		return
+
+	
+Individual.register(Instrument)
+      
 if __name__ == '__main__':
-    i = Instrument()
-    i.random(0.7, 4)
+    i = Instrument.random(0.7, 4)
     print i.to_json()

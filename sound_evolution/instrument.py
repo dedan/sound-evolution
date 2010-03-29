@@ -18,16 +18,40 @@ class Instrument(object):
             self.instrument_tree = instrument_tree
 
     
-    def to_ocr(self):
+    def to_instr(self):
         """Generate csound ocr code."""
+        n = 0
+        (c, d, n) = self.__class__.__to_instr(self.instrument_tree, n)
+        return c + "\n" + "out\ta%d" % n
+        
+    @staticmethod
+    def __to_instr(node, n):
         csound_code = ""
         data = []
-        for child in n.children:
-            (code, data) = child.to_csound
+        tmp_n = n
+        for child in node["children"]:
+            (code, d, n) = Instrument.__to_instr(child, tmp_n)
             csound_code += code
-            data += data
-        return n.render(data)
+            data += (d,)
+            tmp_n += n
+        (c, d, n) = Instrument.__render(node, data, tmp_n)
+        return (csound_code + "\n" + c, d, n) 
+    
         
+    @staticmethod
+    def __render(node, data, n):
+        """render the code for a node"""
+        code = ""
+        var = "a%d" % n
+        if node["code"]["type"] == "code":
+            code = "a%d\t%s\t%s" % (n, node["code"]["symbol"], ", ".join(data))
+        elif node["code"]["type"] == "math":
+            code = "a%d\t=\t%s" % (n, node["code"]["symbol"].join(data))
+        elif node["code"]["type"] == "const":
+            val = str(node["code"]["value"])
+            return ("", val, n)
+        return (code, "a%d" % n, n+1)
+
     def to_json(self):
         """Serialize instrument to JSON."""
         return json.dumps(self.instrument_tree)
@@ -80,7 +104,7 @@ class Instrument(object):
                         random_node = Instrument.__make_node(random.choice(opcodes))
                         todo.append(random_node)
                     else:
-                        const_code = {"name": "const", "value": random.random() * max_rand_const}
+                        const_code = Instrument.__make_const_code(random.random() * max_rand_const)
                         random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
@@ -92,7 +116,7 @@ class Instrument(object):
                         random_node = Instrument.__make_node(random.choice(opcodes))
                         todo.append(random_node)
                     else:
-                        const_code = {"name": "const", "value": random.random() * max_rand_const}
+                        const_code = Instrument.__make_const_code(random.random() * max_rand_const)
                         random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
@@ -104,11 +128,29 @@ class Instrument(object):
     @staticmethod        
     def __make_node(code):
         """Make a node with no children."""
-        return { "code": code, "children": []}    
+        return { "code": code, "children": []}
+        
+    @staticmethod
+    def __make_const_code(val):
+        """make a new constant"""
+        return {"name": "const", "type": "const", "value": str(val)}
 
+	def mutate(self):
+		"""Mutate an instrument."""
+		return
+
+	def ficken(self, individual=None):
+		"""Cross a tree-instrument with another one."""
+		return
+
+	def fitness(self):
+		"""Score of the instrument."""
+		return
    
 Individual.register(Instrument)
       
 if __name__ == '__main__':
-    i = Instrument.random(0.7, 4)
+    comp = open("../tests/fixtures/complex_instrument.json").read()
+    i = Instrument(comp)
+    print i.to_instr()
     print i.to_json()

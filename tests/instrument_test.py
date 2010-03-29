@@ -6,7 +6,7 @@ import nose.tools
 import sound_evolution as se
 
 def setup():
-    global simple_json, invalid_json, complex_json
+    global simple_json, invalid_json, complex_json, complex_orc
     simple_json = open(
         os.path.join(os.path.dirname(__file__),
                      "fixtures", "simple_instrument.json")).read()
@@ -16,6 +16,9 @@ def setup():
     complex_json = open(
         os.path.join(os.path.dirname(__file__),
                      "fixtures", "complex_instrument.json")).read()
+    complex_orc = open(
+        os.path.join(os.path.dirname(__file__),
+                  "fixtures", "complex_instrument.orc")).read()
 
 
 def test_create_empty():
@@ -65,6 +68,12 @@ def test_ficken():
     k = i.ficken(j)
     assert (k != i and k != j) 
     assert(type(k) == se.instrument.Instrument)
+    
+def test_to_instr():
+    """docstring for test_to_instr"""
+    global complex_json, complex_orc
+    i = se.instrument.Instrument(complex_json)
+    assert(i.to_instr() == complex_orc)
 
 def test_population_size():
     """Should create a list of instruments with length == size"""

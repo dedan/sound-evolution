@@ -4,7 +4,7 @@
 	"name": "oscil",
 	"type": "code",
 	"symbol": "oscil",
-	"type": "a",
+	"outtype": "a",
 	"params": [
 		{"name": "amp", "type": "x", "min": 0, "max": 1},
 		{"name": "freq", "type": "x", "min": 20, "max": 20000},

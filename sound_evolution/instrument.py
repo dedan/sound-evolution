@@ -28,15 +28,29 @@ class Instrument(object):
             data += data
         return n.render(data)
         
-        
     def to_json(self):
         """Serialize instrument to JSON."""
         return json.dumps(self.instrument_tree)
+
+    def mutate(self):
+        """Mutate an instrument."""
+        return
+
+    def ficken(self, individual=None):
+		"""Cross a tree-instrument with another one."""
+		return
+
+    def fitness(self):
+        """Score of the instrument."""
+        return
             
     @staticmethod
-    def random(const_probability, max_children):
+    def random(params):
         """create a random instrument"""
-	        
+
+        const_probability = params.get("const_prob")
+        max_children = params.get("max_children")	    
+    
         def get_only_type(the_type, opcodes):
         	"""get only opcodes the have output of the_type"""
         	return [op for op in opcodes if op["outtype"] == the_type]
@@ -87,24 +101,12 @@ class Instrument(object):
         inst.instrument_tree = root
         return inst
                 
-    @staticmethod         
+    @staticmethod        
     def __make_node(code):
         """Make a node with no children."""
-        return { "code": code, "children": []}
+        return { "code": code, "children": []}    
 
-	def mutate(self):
-		"""Mutate an instrument."""
-		return
-
-	def ficken(self, individual=None):
-		"""Cross a tree-instrument with another one."""
-		return
-
-	def fitness(self):
-		"""Score of the instrument."""
-		return
-
-	
+   
 Individual.register(Instrument)
       
 if __name__ == '__main__':

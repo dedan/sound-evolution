@@ -1,4 +1,5 @@
 import abc
+import instrument
 
 class Individual(object):
 	"""A class representing an individual."""
@@ -19,7 +20,6 @@ class Individual(object):
 		"""Score of the individual."""
 		return
 
-	@staticmethod
 	@abc.abstractmethod
 	def random(params):
 		"""Generate a random individual."""
@@ -28,12 +28,13 @@ class Individual(object):
 		
 class Population(object):
 
-		def __init__(self, size, cls):
-			self.size = size
-			self.individual_cls = cls
-			self.individuals = [cls.random(params) for i in range(size)]
+    def __init__(self, size, cls, params):
+            self.size = size
+            self.individual_cls = cls
+            self.params = params
+            self.individuals = [cls.random(params) for i in range(size)]
 
-		def next_generation(self):
+    def next_generation(self):
 			"""Create the next generation from current population.""" 
 			pass
         

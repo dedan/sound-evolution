@@ -38,7 +38,8 @@ def test_create_from_json_fails():
 
 def test_create_rand_instr():
     """Should create a random tree-instrument."""
-    i = se.instrument.Instrument.random(0.7, 4)
+    params = {"const_prob": 0.7, "max_children": 4}
+    i = se.instrument.Instrument.random(params)
     assert(type(i) == se.instrument.Instrument)
     assert i.instrument_tree != None
     
@@ -53,15 +54,24 @@ def test_mutation():
     global simple_json
     i = se.instrument.Instrument(simple_json)
     n = i.mutate()
+    assert(type(n) == se.instrument.Instrument)    
     assert (n.to_json != i_to_json)
-    assert(type(n) == se.instrument.Instrument)
-    
+        
 def test_ficken():
     """The crossover of two instruments creates a new instrument not equal to either of the originals"""
     global simple_json, complex_json
     i = se.instrument.Instrument(simple_json)
     j = se.instrument.Instrument(complex_json)
     k = i.ficken(j)
-    assert k != i & k != j 
+    assert (k != i and k != j) 
     assert(type(k) == se.instrument.Instrument)
+
+def test_population_size():
+    """Should create a list of instruments with length == size"""
+    size = 3
+    params = {"const_prob": 0.7, "max_children": 4}
+    pop = se.genetics.Population(size, se.instrument.Instrument, params)
+    assert(len(pop.individuals) == size)
+
+
 

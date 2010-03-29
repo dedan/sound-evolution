@@ -11,3 +11,10 @@ ThumbsDB
 *nav
 *out
 *pyc
+*aux
+*fdb_latexmk
+*log
+*syctex.gz
+*toc
+*pdf
+*.egg-info

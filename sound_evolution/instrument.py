@@ -12,7 +12,7 @@ class Instrument(object):
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string """
         if type(instrument_tree) is str:
-            self.instrument_tree = json.loads(json_string)
+            self.instrument_tree = json.loads(instrument_tree)
         else:
             self.instrument_tree = instrument_tree
 

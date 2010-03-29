@@ -19,3 +19,4 @@ ThumbsDB
 *pdf
 *.egg-info
 *.tmproj
+*.coverage

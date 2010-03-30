@@ -1,5 +1,4 @@
 import abc
-import instrument
 
 class Individual(object):
     """A class representing an individual."""

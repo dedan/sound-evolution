@@ -28,13 +28,11 @@ class Instrument(object):
     def __to_instr(node, n):
         csound_code = ""
         data = []
-        tmp_n = n
         for child in node["children"]:
-            (code, d, n) = Instrument.__to_instr(child, tmp_n)
+            (code, d, n) = Instrument.__to_instr(child, n)
             csound_code += code
             data += (d,)
-            tmp_n += n
-        (c, d, n) = Instrument.__render(node, data, tmp_n)
+        (c, d, n) = Instrument.__render(node, data, n)
         return (csound_code + "\n" + c, d, n)
 
     @staticmethod
@@ -83,11 +81,11 @@ class Instrument(object):
         opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), "opcodes.json")).read())
 
         # select random root element
-        # TODO maybe this has to be constrained to outtype="a" type
-        root = Instrument.__make_node(random.choice(opcodes))
+        only_a_type = get_only_type("a", opcodes)
+        root = Instrument.__make_node(random.choice(only_a_type))
         todo = deque([root])
 
-        # TODO this number has to be replaced by the may value of the opcode with
+        # TODO this number has to be replaced by the max value of the opcode with
         # which it is used
         max_rand_const = 100
 

@@ -12,17 +12,19 @@ class Instrument(object):
     """A class representing the genome tree."""
 
     def __init__(self, instrument_tree=None):
-        """ Create a new Instrument from a json string """
+        """ Create a new Instrument from a json string or from a tree of python objects """
         if type(instrument_tree) is str:
             self.instrument_tree = json.loads(instrument_tree)
         else:
             self.instrument_tree = instrument_tree
 
+
     def to_instr(self):
         """Generate csound ocr code."""
         n = 0
-        (c, d, n) = self.__class__.__to_instr(self.instrument_tree, n)
-        return c + "\n" + "out\ta%d" % n
+        (code, data, n) = self.__class__.__to_instr(self.instrument_tree, n)
+        return code + "\n" + "out\ta%d" % n
+
 
     @staticmethod
     def __to_instr(node, n):
@@ -33,7 +35,8 @@ class Instrument(object):
             csound_code += code
             data += (d,)
         (c, d, n) = Instrument.__render(node, data, n)
-        return (csound_code + "\n" + c, d, n)
+        return (csound_code + c, d, n)
+
 
     @staticmethod
     def __render(node, data, n):
@@ -47,7 +50,7 @@ class Instrument(object):
         elif node["code"]["type"] == "const":
             val = str(node["code"]["value"])
             return ("", val, n)
-        return (code, "a%d" % n, n+1)
+        return (code +"\n", "a%d" % n, n+1)
 
     def to_json(self):
         """Serialize instrument to JSON."""

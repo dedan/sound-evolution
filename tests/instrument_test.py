@@ -53,7 +53,7 @@ def test_mutation():
     global simple_json
     i = se.instrument.Instrument(simple_json)
     n = i.mutate()
-    assert (n.to_json != i_to_json)
+    assert (n.to_json != i.to_json)
     assert(type(n) == se.instrument.Instrument)
     
 def test_ficken():
@@ -64,4 +64,7 @@ def test_ficken():
     k = i.ficken(j)
     assert k != i & k != j 
     assert(type(k) == se.instrument.Instrument)
+    
+
+    
 

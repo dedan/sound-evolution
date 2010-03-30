@@ -11,6 +11,9 @@ from genetics import Individual
 class Instrument(object):
     """A class representing the genome tree."""
 
+    __CONST_PROB = 0.7
+    __MAX_CHILDREN = 4
+
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string or from a tree of python objects """
         if type(instrument_tree) is str:
@@ -18,13 +21,11 @@ class Instrument(object):
         else:
             self.instrument_tree = instrument_tree
 
-
     def to_instr(self):
         """Generate csound ocr code."""
         n = 0
         (code, data, n) = self.__class__.__to_instr(self.instrument_tree, n, "a")
         return code + "out\ta%d" % (n-1)
-
 
     @staticmethod
     def __to_instr(node, n, out_type):
@@ -40,7 +41,6 @@ class Instrument(object):
             data += (d,)
         (c, d, n) = Instrument.__render(node, data, n, out_type)
         return (csound_code + c, d, n)
-
 
     @staticmethod
     def __render(node, data, n, out_type):
@@ -59,7 +59,6 @@ class Instrument(object):
             val = str(node["code"]["value"])
             return ("", val, n)
         return (code +"\n", var, n+1)
-
 
     def to_json(self):
         """Serialize instrument to JSON."""
@@ -90,12 +89,12 @@ class Instrument(object):
         """Score of the instrument."""
         return
 
-    @staticmethod
-    def random(params):
+    @classmethod
+    def random(cls, **keywords):
         """create a random instrument"""
 
-        const_probability = params.get("const_prob")
-        max_children = params.get("max_children")
+        const_prob = keywords.get("const_prob") or cls.__CONST_PROB
+        max_children = keywords.get("max_children") or cls.__MAX_CHILDREN
 
         def get_only_type(the_type, opcodes):
             """get only opcodes the have output of the_type"""
@@ -104,7 +103,6 @@ class Instrument(object):
             else:
                 types = [the_type]
             return [op for op in opcodes if op["outtype"] in types]
-
 
         # get list of available opcodes from json file_
         opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), "opcodes.json")).read())
@@ -126,7 +124,7 @@ class Instrument(object):
 
                 n_children = random.randint(2, max_children)
                 for i in range(n_children):
-                    if random.random() > const_probability:
+                    if random.random() > const_prob:
                         random_node = Instrument.__make_node(random.choice(opcodes))
                         todo.append(random_node)
                     else:
@@ -148,7 +146,7 @@ class Instrument(object):
                         random_node = Instrument.__make_node(const_code)
 
                     # if it is below constant probability also plug in constant
-                    elif random.random() < const_probability:
+                    elif random.random() < const_prob:
                         # choose random constant according to input range and type
                         random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
                         const_code = Instrument.__make_const_code(random_const)

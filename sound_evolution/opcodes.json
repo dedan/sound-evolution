@@ -7,7 +7,7 @@
     "params": [
       {"name": "amp", "type": "x", "min": 0, "max": 1},
       {"name": "freq", "type": "x", "min": 20, "max": 20000},
-      {"name": "table", "type": "i", "min": 1, "max": 1}
+      {"name": "table", "type": "t", "min": 1, "max": 1}
     ]
   },
   {
@@ -18,7 +18,7 @@
     "params": [
       {"name": "amp", "type": "x", "min": 0, "max": 1},
       {"name": "freq", "type": "x", "min": 0, "max": 20},
-      {"name": "waveform", "type": "i", "min": 0, "max": 5}
+      {"name": "waveform", "type": "t", "min": 0, "max": 5}
     ]
   },
   {
@@ -40,9 +40,9 @@
     "outtype": "x"
   },
   {
-    "name": "add",
+    "name": "sub",
     "type": "math",
-    "symbol": "+",
+    "symbol": "-",
     "outtype": "x"
   }
 ]

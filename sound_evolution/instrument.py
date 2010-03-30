@@ -32,10 +32,12 @@ class Instrument(object):
         data = []
         for i, child in enumerate(node["children"]):
             if node["code"]["type"] == "math":
-                inttype = "k"
+                intype = "k"
             else:
-                inttype = node["code"]["params"][i]["type"]
-            (code, d, n) = Instrument.__to_instr(child, n, inttype)
+                # intype = node["code"]["params"][i]["type"]
+                # print child
+                intype = child["code"]["outtype"]
+            (code, d, n) = Instrument.__to_instr(child, n, intype)
             csound_code += code
             data += (d,)
         (c, d, n) = Instrument.__render(node, data, n, out_type)
@@ -45,6 +47,7 @@ class Instrument(object):
     @staticmethod
     def __render(node, data, n, out_type):
         """render the code for a node"""
+        print "outtype: %s nodename: %s " % (out_type, node["code"]["name"])
         
         if out_type == "x":
             out_type = random.choice(["a", "k"])
@@ -58,6 +61,7 @@ class Instrument(object):
         elif node["code"]["type"] == "const":
             val = str(node["code"]["value"])
             return ("", val, n)
+        print "rendered to: %s" % code
         return (code +"\n", var, n+1)
 
 
@@ -161,7 +165,7 @@ class Instrument(object):
     @staticmethod
     def __make_const_code(val):
         """make a new constant"""
-        return {"name": "const", "type": "const", "value": str(val)}
+        return {"name": "const", "type": "const", "outtype": "x", "value": str(val)}
 
     def mutate(self):
         """Mutate an instrument."""
@@ -179,9 +183,10 @@ Individual.register(Instrument)
 
 
 if __name__ == '__main__':
-    comp = open("../tests/fixtures/complex_instrument.json").read()
+    comp = open("../tests/fixtures/render_error.json").read()
+    err  = open("../tests/fixtures/render_error.orc").read()
     i = Instrument(comp)
     # random_params = {"const_prob": 0.7, "max_children": 5}
     # i = Instrument.random(random_params)
     print i.to_instr()
-#    print i.to_json()
+    # print err

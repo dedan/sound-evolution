@@ -6,7 +6,7 @@ import nose.tools
 import sound_evolution as se
 
 def setup():
-    global simple_json, invalid_json, complex_json, complex_orc
+    global simple_json, invalid_json, complex_json, complex_orc, render_err_json, render_err_orc
     simple_json = open(
         os.path.join(os.path.dirname(__file__),
                      "fixtures", "simple_instrument.json")).read()
@@ -19,6 +19,12 @@ def setup():
     complex_orc = open(
         os.path.join(os.path.dirname(__file__),
                   "fixtures", "complex_instrument.orc")).read()
+    render_err_json = open(
+        os.path.join(os.path.dirname(__file__),
+                  "fixtures", "render_error.json")).read()
+    render_err_orc = open(
+        os.path.join(os.path.dirname(__file__),
+                  "fixtures", "render_error.orc")).read()
 
 
 def test_create_empty():
@@ -77,6 +83,16 @@ def test_to_instr():
     global complex_json, complex_orc
     i = se.instrument.Instrument(complex_json)
     assert(i.to_instr() == complex_orc)
+    
+    
+# def test_render_bug():
+#     """docstring for test_render_bug"""
+#     global render_err_json, render_err_orc
+#     i = se.instrument.Instrument(render_err_json)
+#     print i.to_instr()
+#     print render_err_orc
+#     assert(i.to_instr() == render_err_orc)
+
 
 def test_population():
     """Should create a Population object containing a list of instruments with length == size"""

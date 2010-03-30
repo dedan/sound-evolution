@@ -22,35 +22,44 @@ class Instrument(object):
     def to_instr(self):
         """Generate csound ocr code."""
         n = 0
-        (code, data, n) = self.__class__.__to_instr(self.instrument_tree, n)
+        (code, data, n) = self.__class__.__to_instr(self.instrument_tree, n, "a")
         return code + "out\ta%d" % (n-1)
 
 
     @staticmethod
-    def __to_instr(node, n):
+    def __to_instr(node, n, out_type):
         csound_code = ""
         data = []
-        for child in node["children"]:
-            (code, d, n) = Instrument.__to_instr(child, n)
+        for i, child in enumerate(node["children"]):
+            if node["code"]["type"] == "math":
+                inttype = "k"
+            else:
+                inttype = node["code"]["params"][i]["type"]
+            (code, d, n) = Instrument.__to_instr(child, n, inttype)
             csound_code += code
             data += (d,)
-        (c, d, n) = Instrument.__render(node, data, n)
+        (c, d, n) = Instrument.__render(node, data, n, out_type)
         return (csound_code + c, d, n)
 
 
     @staticmethod
-    def __render(node, data, n):
+    def __render(node, data, n, out_type):
         """render the code for a node"""
+        
+        if out_type == "x":
+            out_type = random.choice(["a", "k"])
+            
         code = ""
-        var = "a%d" % n
+        var = "%s%d" % (out_type, n)
         if node["code"]["type"] == "code":
-            code = "a%d\t%s\t%s" % (n, node["code"]["symbol"], ", ".join(data))
+            code = "%s\t%s\t%s" % (var, node["code"]["symbol"], ", ".join(data))
         elif node["code"]["type"] == "math":
-            code = "a%d\t=\t%s" % (n, node["code"]["symbol"].join(data))
+            code = "%s\t=\t%s" % (var, node["code"]["symbol"].join(data))
         elif node["code"]["type"] == "const":
             val = str(node["code"]["value"])
             return ("", val, n)
-        return (code +"\n", "a%d" % n, n+1)
+        return (code +"\n", var, n+1)
+
 
     def to_json(self):
         """Serialize instrument to JSON."""
@@ -77,7 +86,11 @@ class Instrument(object):
 
         def get_only_type(the_type, opcodes):
             """get only opcodes the have output of the_type"""
-            return [op for op in opcodes if op["outtype"] == the_type]
+            if the_type == "x":
+                types = ["a", "k"]
+            else:
+                types = [the_type]
+            return [op for op in opcodes if op["outtype"] in types]
 
 
         # get list of available opcodes from json file_
@@ -111,13 +124,28 @@ class Instrument(object):
 
             else:
                 for param in tmp_tree["code"]["params"]:
-                    if random.random() > const_probability:
+                    
+                    # if param type is t alwys plug in a constant
+                    if param["type"] == "t":
+                        if param["max"] == param["min"]:
+                            random_const = param["max"]
+                        else:
+                            random_const = random.randrange(param["min"], param["max"], 1)
+                        const_code = Instrument.__make_const_code(random_const)
+                        random_node = Instrument.__make_node(const_code)
+
+                    # if it is below constant probability also plug in constant
+                    elif random.random() < const_probability:
+                        # choose random constant according to input range and type
+                        random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
+                        const_code = Instrument.__make_const_code(random_const)
+                        random_node = Instrument.__make_node(const_code)
+
+                    # when above the constant probability plug in another opcode
+                    else:
                         filtered = get_only_type(param["type"], opcodes)
                         random_node = Instrument.__make_node(random.choice(opcodes))
                         todo.append(random_node)
-                    else:
-                        const_code = Instrument.__make_const_code(random.random() * max_rand_const)
-                        random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
 
@@ -153,5 +181,7 @@ Individual.register(Instrument)
 if __name__ == '__main__':
     comp = open("../tests/fixtures/complex_instrument.json").read()
     i = Instrument(comp)
+    # random_params = {"const_prob": 0.7, "max_children": 5}
+    # i = Instrument.random(random_params)
     print i.to_instr()
-    print i.to_json()
+#    print i.to_json()

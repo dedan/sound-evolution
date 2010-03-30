@@ -31,7 +31,15 @@
           "code": {
             "name": "const",
             "type": "const",
-            "value": 0.8
+            "value": 1000
+          },
+          "children": []
+        },
+        {
+          "code": {
+            "name": "const",
+            "type": "const",
+            "value": 1
           },
           "children": []
         }

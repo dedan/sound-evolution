@@ -58,7 +58,7 @@ def test_mutation():
     i = se.instrument.Instrument(simple_json)
     n = i.mutate()
     assert(type(n) == se.instrument.Instrument)
-    assert (n.to_json != i_to_json)
+    assert (n.to_json != i.to_json)
 
 def test_ficken():
     """The crossover of two instruments creates a new instrument not equal to either of the originals"""
@@ -68,6 +68,9 @@ def test_ficken():
     k = i.ficken(j)
     assert (k != i and k != j)
     assert(type(k) == se.instrument.Instrument)
+    
+
+    
 
 def test_to_instr():
     """docstring for test_to_instr"""

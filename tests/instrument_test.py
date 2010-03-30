@@ -75,9 +75,19 @@ def test_to_instr():
     i = se.instrument.Instrument(complex_json)
     assert(i.to_instr() == complex_orc)
 
-def test_population_size():
-    """Should create a list of instruments with length == size"""
+def test_population():
+    """Should create a Population object containing a list of instruments with length == size"""
     size = 3
     params = {"const_prob": 0.7, "max_children": 4}
     pop = se.genetics.Population(size, se.instrument.Instrument, params)
+    assert(type(pop) == se.genetics.Population)
+    assert(type(pop.individuals[1]) == se.instrument.Instrument)
     assert(len(pop.individuals) == size)
+
+def test_next_generation():
+    """The next generation should be member of class Population"""
+    size = 3
+    params = {"const_prob": 0.7, "max_children": 4}
+    pop = se.genetics.Population(size, se.instrument.Instrument, params)
+    pop_2 = pop.next_generation()
+    assert(type(pop_2) == se.genetics.Population)

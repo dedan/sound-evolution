@@ -73,7 +73,7 @@ def test_ficken():
     
 
 def test_to_instr():
-    """docstring for test_to_instr"""
+    """test if a simple instrument produces the valid csound code that we wrote by hand"""
     global complex_json, complex_orc
     i = se.instrument.Instrument(complex_json)
     assert(i.to_instr() == complex_orc)

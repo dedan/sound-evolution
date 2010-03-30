@@ -67,7 +67,20 @@ class Instrument(object):
 
     def mutate(self):
         """Mutate an instrument."""
-        return
+        traverses = 4
+	a = self.instrument_tree['children']
+	for i in range(traverses):
+	    n = len(a)
+	    cc = random.randint(0,n-1)    #no. to pick a child out
+	    if i < traverses:
+	        if a[cc]['children'] == []: 
+		    a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree
+		    break
+	        else:
+		    a = a[cc]['children']
+	    else:
+		a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree #something random
+
 
     def ficken(self, individual=None):
         """Cross a tree-instrument with another one."""
@@ -162,10 +175,6 @@ class Instrument(object):
     def __make_const_code(val):
         """make a new constant"""
         return {"name": "const", "type": "const", "value": str(val)}
-
-    def mutate(self):
-        """Mutate an instrument."""
-        return
 
     def ficken(self, individual=None):
         """Cross a tree-instrument with another one."""

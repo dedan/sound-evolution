@@ -23,7 +23,8 @@
           "code": {
             "name": "const",
             "type": "const",
-            "value": 0.1
+            "value": 0.1,
+            "outtype" : "x"
           },
           "children": []
         },
@@ -31,7 +32,8 @@
           "code": {
             "name": "const",
             "type": "const",
-            "value": 1000
+            "value": 1000,
+            "outtype" : "x"
           },
           "children": []
         },
@@ -39,7 +41,8 @@
           "code": {
             "name": "const",
             "type": "const",
-            "value": 1
+            "value": 1,
+            "outtype" : "x"
           },
           "children": []
         }
@@ -49,7 +52,8 @@
       "code": {
         "name": "const",
         "type": "const",
-        "value": 0.5
+        "value": 0.5,
+        "outtype" : "x"
       },
       "children": []
     }

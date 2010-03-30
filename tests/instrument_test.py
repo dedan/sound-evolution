@@ -6,7 +6,7 @@ import nose.tools
 import sound_evolution as se
 
 def setup():
-    global simple_json, invalid_json, complex_json, complex_orc
+    global simple_json, invalid_json, complex_json
     simple_json = open(
         os.path.join(os.path.dirname(__file__),
                      "fixtures", "simple_instrument.json")).read()
@@ -16,9 +16,6 @@ def setup():
     complex_json = open(
         os.path.join(os.path.dirname(__file__),
                      "fixtures", "complex_instrument.json")).read()
-    complex_orc = open(
-        os.path.join(os.path.dirname(__file__),
-                  "fixtures", "complex_instrument.orc")).read()
 
 
 def test_create_empty():
@@ -41,37 +38,33 @@ def test_create_from_json_fails():
 
 def test_create_rand_instr():
     """Should create a random tree-instrument."""
-    params = {"const_prob": 0.7, "max_children": 4}
-    i = se.instrument.Instrument.random(params)
+    i = se.instrument.Instrument.random(0.7, 4)
     assert(type(i) == se.instrument.Instrument)
     assert i.instrument_tree != None
-
+    
 def test_create_to_json():
     """The JSON we create is in valid JSON format"""
     global simple_json
     i = se.instrument.Instrument(simple_json)
     assert ('{"root": {}}' == i.to_json())
-
+    
 def test_mutation():
     """The mutation produces something different from the original thing"""
     global simple_json
     i = se.instrument.Instrument(simple_json)
     n = i.mutate()
-    assert(type(n) == se.instrument.Instrument)
     assert (n.to_json != i.to_json)
-
+    assert(type(n) == se.instrument.Instrument)
+    
 def test_ficken():
     """The crossover of two instruments creates a new instrument not equal to either of the originals"""
     global simple_json, complex_json
     i = se.instrument.Instrument(simple_json)
     j = se.instrument.Instrument(complex_json)
     k = i.ficken(j)
-    assert (k != i and k != j)
+    assert k != i & k != j 
     assert(type(k) == se.instrument.Instrument)
-    
-
-    
-
+   
 def test_to_instr():
     """test if a simple instrument produces the valid csound code that we wrote by hand"""
     global complex_json, complex_orc
@@ -94,3 +87,5 @@ def test_next_generation():
     pop = se.genetics.Population(size, se.instrument.Instrument, params)
     pop_2 = pop.next_generation()
     assert(type(pop_2) == se.genetics.Population)
+
+

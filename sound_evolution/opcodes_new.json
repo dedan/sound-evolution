@@ -1,0 +1,122 @@
+[
+  {
+    "name": "aoscil",
+    "type": "code",
+    "symbol": "oscil",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "x", "min": 0, "max": 1},
+      {"name": "freq", "type": "x", "min": 20, "max": 20000},
+      {"name": "table", "type": "t", "min": 1, "max": 1}
+    ]
+  },
+  {
+    "name": "koscil",
+    "type": "code",
+    "symbol": "oscil",
+    "outtype": "k",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 20, "max": 20000},
+      {"name": "table", "type": "t", "min": 1, "max": 1}
+    ]
+  },
+  {
+    "name": "lfo",
+    "symbol": "lfo",
+    "type": "code",
+    "outtype": "x",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 0, "max": 20},
+      {"name": "waveform", "type": "t", "min": 0, "max": 5}
+    ]
+  },
+  {
+    "name": "mpulse",
+    "type": "code",
+    "symbol": "mpulse",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 20, "max": 20000}
+    ]
+  },
+  {
+    "name": "kphasor",
+    "type": "code",
+    "symbol": "phasor",
+    "outtype": "k",
+    "params": [
+      {"name": "freq", "type": "k", "min": 20, "max": 20000}
+    ]
+  },
+  {
+    "name": "aphasor",
+    "type": "code",
+    "symbol": "phasor",
+    "outtype": "a",
+    "params": [
+      {"name": "freq", "type": "x", "min": 20, "max": 20000}
+    ]
+  },
+  {
+    "name": "linseg",
+    "type": "code",
+    "symbol": "linseg",
+    "outtype": "k",
+    "params": [
+      {"name": "start", "type": "i", "min": 0, "max": 1},    // this is start point min max needs to change according to how the lin seg is working
+      {"name": "rise", "type": "i", "min": 0, "max": 10},    // in seconds
+      {"name": "arrive", "type": "i", "min": 0, "max": 1},   //finishes rise
+      {"name": "dur", "type": "i", "min": 0, "max": 10},     //duration seconds
+      {"name": "enddur", "type": "i", "min": 0, "max": 1},   //end rise   
+    ]
+  },
+  {
+    "name": "outwhitenoise",
+    "type": "code",
+    "symbol": "rand",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "x", "min": 0, "max": 1}
+    ]
+  },
+  {
+    "name": "controlwhitenoise",
+    "type": "code",
+    "symbol": "rand",
+    "outtype": "k",
+    "params": [
+      {"name": "amp", "type": "x", "min": 0, "max": 1}
+    ]
+  },
+  {
+    "name": "mult",
+    "type": "math",
+    "symbol": "*",
+    "outtype": "x",
+    "params": []
+  },
+  {
+    "name": "add",
+    "type": "math",
+    "symbol": "+",
+    "outtype": "x",
+    "params": []
+  },
+  {
+    "name": "div",
+    "type": "math",
+    "symbol": "/",
+    "outtype": "x",
+    "params": []
+  },
+  {
+    "name": "sub",
+    "type": "math",
+    "symbol": "-",
+    "outtype": "x",
+    "params": []
+  }
+]

@@ -66,11 +66,11 @@
     "symbol": "linseg",
     "outtype": "k",
     "params": [
-      {"name": "start", "type": "i", "min": 0, "max": 1},    // this is start point min max needs to change according to how the lin seg is working
-      {"name": "rise", "type": "i", "min": 0, "max": 10},    // in seconds
-      {"name": "arrive", "type": "i", "min": 0, "max": 1},   //finishes rise
-      {"name": "dur", "type": "i", "min": 0, "max": 10},     //duration seconds
-      {"name": "enddur", "type": "i", "min": 0, "max": 1},   //end rise   
+      {"name": "start", "type": "i", "min": 0, "max": 1},
+      {"name": "rise", "type": "i", "min": 0, "max": 10},
+      {"name": "arrive", "type": "i", "min": 0, "max": 1},
+      {"name": "dur", "type": "i", "min": 0, "max": 10},
+      {"name": "enddur", "type": "i", "min": 0, "max": 1}
     ]
   },
   {

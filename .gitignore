@@ -20,3 +20,4 @@ ThumbsDB
 *.egg-info
 *.tmproj
 *.coverage
+default.csd

@@ -87,15 +87,6 @@ def test_to_instr():
     i = se.instrument.Instrument(complex_json)
     assert(i.to_instr() == complex_orc)
     
-    
-# def test_render_bug():
-#     """docstring for test_render_bug"""
-#     global render_err_json, render_err_orc
-#     i = se.instrument.Instrument(render_err_json)
-#     print i.to_instr()
-#     print render_err_orc
-#     assert(i.to_instr() == render_err_orc)
-
 
 def test_population():
     """Should create a Population object containing a list of instruments with length == size"""

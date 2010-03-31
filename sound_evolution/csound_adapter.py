@@ -17,11 +17,9 @@ class CSD(object):
         self.__instruments += args
 
     def orchestra_definition(self):
-        result = ''
-        n = 1
-        for inst in self.__instruments:
-            result += "sr = 44100\nkr = 4410\nnchnls = 1\n0dbfs = 1\n\ninstr %d\n%s\nendin\n" % (n, inst.to_instr())
-            n += 1
+        result = 'sr = 44100\nkr = 4410\nnchnls = 1\n0dbfs = 1\n'
+        for n, inst in enumerate(self.__instruments):
+            result += "\ninstr %d\n%s\nendin\n" % (n+1, inst.to_instr())
         return string.rstrip(result)
 
     def tables(self):

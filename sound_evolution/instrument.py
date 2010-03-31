@@ -31,13 +31,11 @@ class Instrument(object):
 
     @staticmethod
     def __to_instr(node, n, out_type):
+
         csound_code = ""
         data = []
         for i, child in enumerate(node["children"]):
-            if node["code"]["type"] == "math":
-                intype = "k"
-            else:
-                intype = child["code"]["outtype"]
+            intype = child["code"]["outtype"]
             (code, d, n) = Instrument.__to_instr(child, n, intype)
             csound_code += code
             data += (d,)
@@ -83,14 +81,6 @@ class Instrument(object):
 		a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree #something random
 
 
-    def ficken(self, individual=None):
-        """Cross a tree-instrument with another one."""
-        return
-
-    def fitness(self):
-        """Score of the instrument."""
-        return
-
     @classmethod
     def random(cls, **keywords):
         """create a random instrument"""
@@ -132,7 +122,8 @@ class Instrument(object):
                 n_children = random.randint(2, max_children)
                 for i in range(n_children):
                     if random.random() > const_prob:
-                        random_node = Instrument.__make_node(random.choice(opcodes))
+                        filtered = get_only_type(tmp_tree["code"]["intype"], opcodes)
+                        random_node = Instrument.__make_node(random.choice(filtered))
                         todo.append(random_node)
                     else:
                         const_code = Instrument.__make_const_code(random.random() * max_rand_const)

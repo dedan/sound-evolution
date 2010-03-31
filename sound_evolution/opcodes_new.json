@@ -79,31 +79,67 @@
     ]
   },
   {
-    "name": "mult",
-    "type": "math",
-    "symbol": "*",
-    "outtype": "x",
-    "params": []
-  },
-  {
     "name": "add",
     "type": "math",
     "symbol": "+",
-    "outtype": "x",
-    "params": []
-  },
-  {
-    "name": "div",
-    "type": "math",
-    "symbol": "/",
-    "outtype": "x",
+    "outtype": "a",
+    "intype": "x",
     "params": []
   },
   {
     "name": "sub",
     "type": "math",
     "symbol": "-",
-    "outtype": "x",
+    "outtype": "a",
+    "intype": "x",
+    "params": []
+  },
+  {
+    "name": "mult",
+    "type": "math",
+    "symbol": "*",
+    "outtype": "a",
+    "intype": "x",
+    "params": []
+  },
+  {
+    "name": "div",
+    "type": "math",
+    "symbol": "/",
+    "outtype": "a",
+    "intype": "x",
+    "params": []
+  },
+  {
+    "name": "add",
+    "type": "math",
+    "symbol": "+",
+    "outtype": "k",
+    "intype": "k",
+    "params": []
+  },
+  {
+    "name": "sub",
+    "type": "math",
+    "symbol": "-",
+    "outtype": "k",
+    "intype": "k",
+    "params": []
+  },
+  {
+    "name": "mult",
+    "type": "math",
+    "symbol": "*",
+    "outtype": "k",
+    "intype": "k",
+    "params": []
+  },
+  {
+    "name": "div",
+    "type": "math",
+    "symbol": "/",
+    "outtype": "k",
+    "intype": "k",
     "params": []
   }
 ]

@@ -24,7 +24,6 @@ class Individual(object):
         """Generate a random individual."""
         return
 
-
 class Population(object):
 
     def __init__(self, size, cls, params):

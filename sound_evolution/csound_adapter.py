@@ -1,3 +1,5 @@
+"""Generates a sound from a tree-instrument."""
+
 import string, os, sys
 
 class CSD(object):
@@ -54,11 +56,7 @@ class CSD(object):
                              self.tagify('CsInstruments', self.orchestra_definition()) +
                              self.tagify('CsScore', self.score_definition()), 0))
         fp.close()
-        #if self.render_sound:
-        os.system('csound %s' % (self.output_csd_filename))
         
+        os.system('csound %s' % (self.output_csd_filename))
 
-          
-
-
-
+     

@@ -1,0 +1,285 @@
+
+{
+    "code": 
+    {
+        "params": 
+        [
+            {
+                "max": 1,
+                 "type": "x",
+                 "name": "amp",
+                 "min": 0
+            },
+             
+            {
+                "max": 20000,
+                 "type": "x",
+                 "name": "freq",
+                 "min": 20
+            },
+             
+            {
+                "max": 1,
+                 "type": "t",
+                 "name": "table",
+                 "min": 1
+            }
+        ],
+         "symbol": "oscil",
+         "outtype": "a",
+         "type": "code",
+         "name": "oscilx"
+    },
+     "children": 
+    [
+        {
+            "code": 
+            {
+                "outtype": "x",
+                 "type": "const",
+                 "name": "const",
+                 "value": "0.708150101702"
+            },
+             "children": 
+            [
+            ]
+        },
+         
+        {
+            "code": 
+            {
+                "params": 
+                [
+                    {
+                        "max": 1,
+                         "type": "x",
+                         "name": "amp",
+                         "min": 0
+                    },
+                     
+                    {
+                        "max": 20000,
+                         "type": "x",
+                         "name": "freq",
+                         "min": 20
+                    },
+                     
+                    {
+                        "max": 1,
+                         "type": "t",
+                         "name": "table",
+                         "min": 1
+                    }
+                ],
+                 "symbol": "oscil",
+                 "outtype": "a",
+                 "type": "code",
+                 "name": "oscilx"
+            },
+             "children": 
+            [
+                {
+                    "code": 
+                    {
+                        "params": 
+                        [
+                            {
+                                "max": 1,
+                                 "type": "k",
+                                 "name": "amp",
+                                 "min": 0
+                            },
+                             
+                            {
+                                "max": 20000,
+                                 "type": "k",
+                                 "name": "freq",
+                                 "min": 20
+                            },
+                             
+                            {
+                                "max": 1,
+                                 "type": "t",
+                                 "name": "table",
+                                 "min": 1
+                            }
+                        ],
+                         "symbol": "oscil",
+                         "outtype": "k",
+                         "type": "code",
+                         "name": "oscil"
+                    },
+                     "children": 
+                    [
+                        {
+                            "code": 
+                            {
+                                "params": 
+                                [
+                                    {
+                                        "max": 1,
+                                         "type": "x",
+                                         "name": "amp",
+                                         "min": 0
+                                    },
+                                     
+                                    {
+                                        "max": 20000,
+                                         "type": "x",
+                                         "name": "freq",
+                                         "min": 20
+                                    },
+                                     
+                                    {
+                                        "max": 1,
+                                         "type": "t",
+                                         "name": "table",
+                                         "min": 1
+                                    }
+                                ],
+                                 "symbol": "oscil",
+                                 "outtype": "a",
+                                 "type": "code",
+                                 "name": "oscilx"
+                            },
+                             "children": 
+                            [
+                                {
+                                    "code": 
+                                    {
+                                        "outtype": "x",
+                                         "type": "const",
+                                         "name": "const",
+                                         "value": "0.391179410015"
+                                    },
+                                     "children": 
+                                    [
+                                    ]
+                                },
+                                 
+                                {
+                                    "code": 
+                                    {
+                                        "params": 
+                                        [
+                                        ],
+                                         "symbol": "-",
+                                         "outtype": "x",
+                                         "type": "math",
+                                         "name": "sub"
+                                    },
+                                     "children": 
+                                    [
+                                        {
+                                            "code": 
+                                            {
+                                                "outtype": "x",
+                                                 "type": "const",
+                                                 "name": "const",
+                                                 "value": "68.7071174974"
+                                            },
+                                             "children": 
+                                            [
+                                            ]
+                                        },
+                                         
+                                        {
+                                            "code": 
+                                            {
+                                                "outtype": "x",
+                                                 "type": "const",
+                                                 "name": "const",
+                                                 "value": "94.5715639745"
+                                            },
+                                             "children": 
+                                            [
+                                            ]
+                                        }
+                                    ]
+                                },
+                                 
+                                {
+                                    "code": 
+                                    {
+                                        "outtype": "x",
+                                         "type": "const",
+                                         "name": "const",
+                                         "value": "1"
+                                    },
+                                     "children": 
+                                    [
+                                    ]
+                                }
+                            ]
+                        },
+                         
+                        {
+                            "code": 
+                            {
+                                "outtype": "x",
+                                 "type": "const",
+                                 "name": "const",
+                                 "value": "18270.6928399"
+                            },
+                             "children": 
+                            [
+                            ]
+                        },
+                         
+                        {
+                            "code": 
+                            {
+                                "outtype": "x",
+                                 "type": "const",
+                                 "name": "const",
+                                 "value": "1"
+                            },
+                             "children": 
+                            [
+                            ]
+                        }
+                    ]
+                },
+                 
+                {
+                    "code": 
+                    {
+                        "outtype": "x",
+                         "type": "const",
+                         "name": "const",
+                         "value": "12444.7480957"
+                    },
+                     "children": 
+                    [
+                    ]
+                },
+                 
+                {
+                    "code": 
+                    {
+                        "outtype": "x",
+                         "type": "const",
+                         "name": "const",
+                         "value": "1"
+                    },
+                     "children": 
+                    [
+                    ]
+                }
+            ]
+        },
+         
+        {
+            "code": 
+            {
+                "outtype": "x",
+                 "type": "const",
+                 "name": "const",
+                 "value": "1"
+            },
+             "children": 
+            [
+            ]
+        }
+    ]
+}

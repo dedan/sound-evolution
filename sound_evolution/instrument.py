@@ -11,6 +11,9 @@ from genetics import Individual
 class Instrument(object):
     """A class representing the genome tree."""
 
+    __CONST_PROB = 0.7
+    __MAX_CHILDREN = 4
+
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string or from a tree of python objects """
         if type(instrument_tree) is str:
@@ -18,13 +21,11 @@ class Instrument(object):
         else:
             self.instrument_tree = instrument_tree
 
-
     def to_instr(self):
         """Generate csound ocr code."""
         n = 0
         (code, data, n) = self.__class__.__to_instr(self.instrument_tree, n, "a")
         return code + "out\ta%d" % (n-1)
-
 
     @staticmethod
     def __to_instr(node, n, out_type):
@@ -32,19 +33,21 @@ class Instrument(object):
         data = []
         for i, child in enumerate(node["children"]):
             if node["code"]["type"] == "math":
-                inttype = "k"
+                intype = "k"
             else:
-                inttype = node["code"]["params"][i]["type"]
-            (code, d, n) = Instrument.__to_instr(child, n, inttype)
+                # intype = node["code"]["params"][i]["type"]
+                # print child
+                intype = child["code"]["outtype"]
+            (code, d, n) = Instrument.__to_instr(child, n, intype)
             csound_code += code
             data += (d,)
         (c, d, n) = Instrument.__render(node, data, n, out_type)
         return (csound_code + c, d, n)
 
-
     @staticmethod
     def __render(node, data, n, out_type):
         """render the code for a node"""
+        print "outtype: %s nodename: %s " % (out_type, node["code"]["name"])
         
         if out_type == "x":
             out_type = random.choice(["a", "k"])
@@ -58,8 +61,8 @@ class Instrument(object):
         elif node["code"]["type"] == "const":
             val = str(node["code"]["value"])
             return ("", val, n)
+        print "rendered to: %s" % code
         return (code +"\n", var, n+1)
-
 
     def to_json(self):
         """Serialize instrument to JSON."""
@@ -67,7 +70,20 @@ class Instrument(object):
 
     def mutate(self):
         """Mutate an instrument."""
-        return
+        traverses = 4
+	a = self.instrument_tree['children']
+	for i in range(traverses):
+	    n = len(a)
+	    cc = random.randint(0,n-1)    #no. to pick a child out
+	    if i < traverses:
+	        if a[cc]['children'] == []: 
+		    a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree
+		    break
+	        else:
+		    a = a[cc]['children']
+	    else:
+		a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree #something random
+
 
     def ficken(self, individual=None):
         """Cross a tree-instrument with another one."""
@@ -77,12 +93,12 @@ class Instrument(object):
         """Score of the instrument."""
         return
 
-    @staticmethod
-    def random(params):
+    @classmethod
+    def random(cls, **keywords):
         """create a random instrument"""
 
-        const_probability = params.get("const_prob")
-        max_children = params.get("max_children")
+        const_prob = keywords.get("const_prob") or cls.__CONST_PROB
+        max_children = keywords.get("max_children") or cls.__MAX_CHILDREN
 
         def get_only_type(the_type, opcodes):
             """get only opcodes the have output of the_type"""
@@ -91,7 +107,6 @@ class Instrument(object):
             else:
                 types = [the_type]
             return [op for op in opcodes if op["outtype"] in types]
-
 
         # get list of available opcodes from json file_
         opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), "opcodes.json")).read())
@@ -113,7 +128,7 @@ class Instrument(object):
 
                 n_children = random.randint(2, max_children)
                 for i in range(n_children):
-                    if random.random() > const_probability:
+                    if random.random() > const_prob:
                         random_node = Instrument.__make_node(random.choice(opcodes))
                         todo.append(random_node)
                     else:
@@ -135,7 +150,7 @@ class Instrument(object):
                         random_node = Instrument.__make_node(const_code)
 
                     # if it is below constant probability also plug in constant
-                    elif random.random() < const_probability:
+                    elif random.random() < const_prob:
                         # choose random constant according to input range and type
                         random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
                         const_code = Instrument.__make_const_code(random_const)
@@ -161,11 +176,7 @@ class Instrument(object):
     @staticmethod
     def __make_const_code(val):
         """make a new constant"""
-        return {"name": "const", "type": "const", "value": str(val)}
-
-    def mutate(self):
-        """Mutate an instrument."""
-        return
+        return {"name": "const", "type": "const", "outtype": "x", "value": str(val)}
 
     def ficken(self, individual=None):
         """Cross a tree-instrument with another one."""
@@ -179,9 +190,10 @@ Individual.register(Instrument)
 
 
 if __name__ == '__main__':
-    comp = open("../tests/fixtures/complex_instrument.json").read()
+    comp = open("../tests/fixtures/render_error.json").read()
+    err  = open("../tests/fixtures/render_error.orc").read()
     i = Instrument(comp)
     # random_params = {"const_prob": 0.7, "max_children": 5}
     # i = Instrument.random(random_params)
     print i.to_instr()
-#    print i.to_json()
+    # print err

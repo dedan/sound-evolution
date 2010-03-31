@@ -3,7 +3,6 @@ audio files and play in real-time.
 
 """
 
-
 import string, os, sys
 
 class CSD(object):
@@ -65,7 +64,6 @@ class CSD(object):
                 self.tagify('CsInstruments', self.orchestra_definition()) +
                 self.tagify('CsScore', self.score_definition()), 0))
         fp.close()
-
         os.system('csound %s' % (self.output_csd_filename))
 
     def play(self):
@@ -77,4 +75,3 @@ class CSD(object):
             self.__run_csound(output="aif", output_filename=args[0])
         else:
             self.__run_csound(output="aif")
-

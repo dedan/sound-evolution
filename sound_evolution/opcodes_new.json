@@ -39,7 +39,7 @@
     "outtype": "a",
     "params": [
       {"name": "amp", "type": "k", "min": 0, "max": 1},
-      {"name": "freq", "type": "k", "min": 20, "max": 20000}
+      {"name": "int", "type": "k", "min": 0, "max": 1}
     ]
   },
   {
@@ -61,25 +61,12 @@
     ]
   },
   {
-    "name": "linseg",
-    "type": "code",
-    "symbol": "linseg",
-    "outtype": "k",
-    "params": [
-      {"name": "start", "type": "i", "min": 0, "max": 1},
-      {"name": "rise", "type": "i", "min": 0, "max": 10},
-      {"name": "arrive", "type": "i", "min": 0, "max": 1},
-      {"name": "dur", "type": "i", "min": 0, "max": 10},
-      {"name": "enddur", "type": "i", "min": 0, "max": 1}
-    ]
-  },
-  {
     "name": "outwhitenoise",
     "type": "code",
     "symbol": "rand",
     "outtype": "a",
     "params": [
-      {"name": "amp", "type": "x", "min": 0, "max": 1}
+      {"name": "amp", "type": "k", "min": 0, "max": 1}
     ]
   },
   {
@@ -88,7 +75,7 @@
     "symbol": "rand",
     "outtype": "k",
     "params": [
-      {"name": "amp", "type": "x", "min": 0, "max": 1}
+      {"name": "amp", "type": "k", "min": 0, "max": 1}
     ]
   },
   {

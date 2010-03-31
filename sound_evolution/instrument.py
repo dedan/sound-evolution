@@ -5,6 +5,7 @@ import abc
 import simplejson as json
 import random
 from collections import deque
+import csound_adapter
 
 from genetics import Individual
 
@@ -13,6 +14,7 @@ class Instrument(object):
 
     __CONST_PROB = 0.7
     __MAX_CHILDREN = 4
+    __OPCODES_FILE = "opcodes.json"
 
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string or from a tree of python objects """
@@ -35,8 +37,6 @@ class Instrument(object):
             if node["code"]["type"] == "math":
                 intype = "k"
             else:
-                # intype = node["code"]["params"][i]["type"]
-                # print child
                 intype = child["code"]["outtype"]
             (code, d, n) = Instrument.__to_instr(child, n, intype)
             csound_code += code
@@ -47,7 +47,6 @@ class Instrument(object):
     @staticmethod
     def __render(node, data, n, out_type):
         """render the code for a node"""
-        print "outtype: %s nodename: %s " % (out_type, node["code"]["name"])
         
         if out_type == "x":
             out_type = random.choice(["a", "k"])
@@ -61,7 +60,6 @@ class Instrument(object):
         elif node["code"]["type"] == "const":
             val = str(node["code"]["value"])
             return ("", val, n)
-        print "rendered to: %s" % code
         return (code +"\n", var, n+1)
 
     def to_json(self):
@@ -99,20 +97,25 @@ class Instrument(object):
 
         const_prob = keywords.get("const_prob") or cls.__CONST_PROB
         max_children = keywords.get("max_children") or cls.__MAX_CHILDREN
+        opcodes_file = keywords.get("opcodes_file") or cls.__OPCODES_FILE
 
         def get_only_type(the_type, opcodes):
             """get only opcodes the have output of the_type"""
             if the_type == "x":
-                types = ["a", "k"]
+                types = ["a", "k", "x"]
             else:
                 types = [the_type]
             return [op for op in opcodes if op["outtype"] in types]
+            
+        def get_only_not_type(the_type, opcodes):
+            """get only opcodes that don't have a certain type"""
+            return [op for op in opcodes if op["outtype"] != the_type]
 
         # get list of available opcodes from json file_
-        opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), "opcodes.json")).read())
+        opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), opcodes_file)).read())
 
-        # select random root element
-        only_a_type = get_only_type("a", opcodes)
+        # select random root element (with a output)
+        only_a_type = get_only_not_type("k", opcodes)
         root = Instrument.__make_node(random.choice(only_a_type))
         todo = deque([root])
 
@@ -122,7 +125,7 @@ class Instrument(object):
 
         while todo:
             tmp_tree = todo.popleft()
-
+            
             # if it is a math operator
             if tmp_tree["code"]["type"] == "math":
 
@@ -137,6 +140,7 @@ class Instrument(object):
 
                     tmp_tree["children"].append(random_node)
 
+            # if it is an opcode
             else:
                 for param in tmp_tree["code"]["params"]:
                     
@@ -159,13 +163,13 @@ class Instrument(object):
                     # when above the constant probability plug in another opcode
                     else:
                         filtered = get_only_type(param["type"], opcodes)
-                        random_node = Instrument.__make_node(random.choice(opcodes))
+                        randop = random.choice(filtered)
+                        random_node = Instrument.__make_node(randop)
                         todo.append(random_node)
 
                     tmp_tree["children"].append(random_node)
 
-        inst = Instrument()
-        inst.instrument_tree = root
+        inst = Instrument(root)
         return inst
 
     @staticmethod
@@ -191,9 +195,13 @@ Individual.register(Instrument)
 
 if __name__ == '__main__':
     comp = open("../tests/fixtures/render_error.json").read()
-    err  = open("../tests/fixtures/render_error.orc").read()
     i = Instrument(comp)
-    # random_params = {"const_prob": 0.7, "max_children": 5}
-    # i = Instrument.random(random_params)
+    # i = Instrument.random(const_prob=0.6, max_children=4,
+    #     opcodes_file="opcodes_new.json")
+    
+    # csd = csound_adapter.CSD()
+    # csd.orchestra(i)
+    # csd.score('i 1 0 2')
+    # csd.play()
+    # print i.to_json()
     print i.to_instr()
-    # print err

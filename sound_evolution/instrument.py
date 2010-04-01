@@ -176,7 +176,7 @@ class Instrument(object):
         
     def mutate(self):
         """Mutate an instrument."""
-        flat = Instrument.traverse(self.instrument_tree)
+        flat = Instrument.__traverse(self.instrument_tree)
         winner = random.randint(0,len(flat)-1)
         random_tree = Instrument.random(root_type=flat[winner]["code"]["outtype"]).instrument_tree
         flat[winner]["code"] = random_tree["code"]
@@ -184,8 +184,8 @@ class Instrument(object):
 
     def ficken(self, individual=None):
         """Cross a tree-instrument with another one."""
-        flatself = traverse()
-        flatother = other.traverse()
+        flatself = Instrument.__traverse(self.instrument_tree)
+        flatother = Instrument.__traverse(other.instrument_tree)
         candidates = []
         while (candidates == []):
             winner = random.randint(0,len(flatself)-1)
@@ -200,7 +200,7 @@ class Instrument(object):
         return
 
     @staticmethod
-    def traverse(node):
+    def __traverse(node):
         flat = []    
         for child in node["children"]:
             if child["code"]["type"] == "const":

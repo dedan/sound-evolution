@@ -106,7 +106,13 @@ class Instrument(object):
         opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), opcodes_file)).read())
 
         # select random root element (with a output)
-        if root_type:
+        if root_type and root_type == "t":
+            # TODO this 1 here has to be changed to a randint when we have more 
+            # than 1 table in the score
+            root = Instrument.__make_node(Instrument.__make_const_code("t", 1))
+            inst = Instrument(root)
+            return inst
+        elif root_type:
             filtered = get_only_type(root_type, opcodes)
         else:
             filtered = get_only_not_type("k", opcodes)
@@ -130,7 +136,7 @@ class Instrument(object):
                         random_node = Instrument.__make_node(random.choice(filtered))
                         todo.append(random_node)
                     else:
-                        const_code = Instrument.__make_const_code(random.random() * max_rand_const)
+                        const_code = Instrument.__make_const_code("x", random.random() * max_rand_const)
                         random_node = Instrument.__make_node(const_code)
 
                     tmp_tree["children"].append(random_node)
@@ -145,14 +151,14 @@ class Instrument(object):
                             random_const = param["max"]
                         else:
                             random_const = random.randrange(param["min"], param["max"], 1)
-                        const_code = Instrument.__make_const_code(random_const)
+                        const_code = Instrument.__make_const_code("t", random_const)
                         random_node = Instrument.__make_node(const_code)
 
                     # if it is below constant probability also plug in constant
                     elif random.random() < const_prob:
                         # choose random constant according to input range and type
                         random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
-                        const_code = Instrument.__make_const_code(random_const)
+                        const_code = Instrument.__make_const_code("x", random_const)
                         random_node = Instrument.__make_node(const_code)
 
                     # when above the constant probability plug in another opcode
@@ -215,9 +221,9 @@ class Instrument(object):
         return { "code": code, "children": []}
 
     @staticmethod
-    def __make_const_code(val):
+    def __make_const_code(outtype, val):
         """make a new constant"""
-        return {"name": "const", "type": "const", "outtype": "x", "value": str(val)}
+        return {"name": "const", "type": "const", "outtype": outtype, "value": str(val)}
 
 
 

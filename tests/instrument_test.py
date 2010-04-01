@@ -66,11 +66,11 @@ def test_create_to_json():
 
 def test_mutation():
     """The mutation produces something different from the original thing"""
-    global simple_json
-    i = se.instrument.Instrument(simple_json)
-    n = i.mutate()
-    assert (n.to_json != i.to_json)
-    assert(type(n) == se.instrument.Instrument)
+    global complex_json
+    i = se.instrument.Instrument(complex_json)
+    old_json = i.to_json()
+    i.mutate()
+    assert (old_json != i.to_json)
 
 def test_ficken():
     """The crossover of two instruments creates a new instrument not equal to either of the originals"""

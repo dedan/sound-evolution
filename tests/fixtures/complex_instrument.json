@@ -2,7 +2,8 @@
     "name": "add",
     "type": "math",
     "symbol": "+",
-    "outtype": "x"
+    "outtype": "a",
+    "intype": "x"
   },
   "children" : [
     {

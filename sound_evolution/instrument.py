@@ -14,7 +14,7 @@ class Instrument(object):
 
     __CONST_PROB = 0.7
     __MAX_CHILDREN = 4
-    __OPCODES_FILE = "opcodes.json"
+    __OPCODES_FILE = "opcodes_new.json"
 
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string or from a tree of python objects """
@@ -64,21 +64,21 @@ class Instrument(object):
         """Serialize instrument to JSON."""
         return json.dumps(self.instrument_tree)
 
-    def mutate(self):
-        """Mutate an instrument."""
-        traverses = 4
-	a = self.instrument_tree['children']
-	for i in range(traverses):
-	    n = len(a)
-	    cc = random.randint(0,n-1)    #no. to pick a child out
-	    if i < traverses:
-	        if a[cc]['children'] == []: 
-		    a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree
-		    break
-	        else:
-		    a = a[cc]['children']
-	    else:
-		a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree #something random
+    #     def mutate(self):
+    #         """Mutate an instrument."""
+    #         traverses = 4
+    # a = self.instrument_tree['children']
+    # for i in range(traverses):
+    #     n = len(a)
+    #     cc = random.randint(0,n-1)    #no. to pick a child out
+    #     if i < traverses:
+    #         if a[cc]['children'] == []: 
+    #       a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree
+    #       break
+    #         else:
+    #       a = a[cc]['children']
+    #     else:
+    #   a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree #something random
 
 
     @classmethod
@@ -88,6 +88,7 @@ class Instrument(object):
         const_prob = keywords.get("const_prob") or cls.__CONST_PROB
         max_children = keywords.get("max_children") or cls.__MAX_CHILDREN
         opcodes_file = keywords.get("opcodes_file") or cls.__OPCODES_FILE
+        root_type = keywords.get("root_type")
 
         def get_only_type(the_type, opcodes):
             """get only opcodes the have output of the_type"""
@@ -105,8 +106,13 @@ class Instrument(object):
         opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), opcodes_file)).read())
 
         # select random root element (with a output)
-        only_a_type = get_only_not_type("k", opcodes)
-        root = Instrument.__make_node(random.choice(only_a_type))
+        if root_type:
+            print "got roottype"
+            filtered = get_only_type(root_type, opcodes)
+        else:
+            print "standard random"
+            filtered = get_only_not_type("k", opcodes)
+        root = Instrument.__make_node(random.choice(filtered))
         todo = deque([root])
 
         # TODO this number has to be replaced by the max value of the opcode with
@@ -162,6 +168,48 @@ class Instrument(object):
 
         inst = Instrument(root)
         return inst
+        
+        
+    def mutate(self):
+        """Mutate an instrument."""
+        flat = Instrument.traverse(self.instrument_tree)
+        winner = random.randint(0,len(flat)-1)
+        # flat[winner] = Instrument.random(root_type=flat[winner]["code"]["outtype"]).instrument_tree
+        flat[5]["children"]
+
+
+    def ficken(self, individual=None):
+        """Cross a tree-instrument with another one."""
+        flatself = traverse()
+        flatother = other.traverse()
+        candidates = []
+        while (candidates == []):
+            winner = random.randint(0,len(flatself)-1)
+            crosstype = flatself[winner]["code"]["type"]
+            for item in flatother:
+                if item["code"]["type"] == crosstype:
+                    candidates.append(item)
+        winner2 = random.randint(0,len(candidates)-1)
+        temp = flatself[winner]
+        flatself[winner] = candidates[winner2]
+        candidates[winner2] = temp
+        return
+
+    @staticmethod
+    def traverse(node):
+        flat = []    
+        for child in node['children']:
+            if child["code"]["type"] == "const":
+                flat.append(child)
+            else :
+                flat.extend(Instrument.traverse(child))
+        flat.append(node)
+        return flat        
+        
+    def fitness(self):
+        """Score of the instrument."""
+        return
+
 
     @staticmethod
     def __make_node(code):
@@ -173,13 +221,7 @@ class Instrument(object):
         """make a new constant"""
         return {"name": "const", "type": "const", "outtype": "x", "value": str(val)}
 
-    def ficken(self, individual=None):
-        """Cross a tree-instrument with another one."""
-        return
 
-    def fitness(self):
-        """Score of the instrument."""
-        return
 
 Individual.register(Instrument)
 

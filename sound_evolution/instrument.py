@@ -6,7 +6,7 @@ import simplejson as json
 import random
 from collections import deque
 import csound_adapter
-
+from gvgen import *
 from genetics import Individual
 
 class Instrument(object):
@@ -64,22 +64,48 @@ class Instrument(object):
         """Serialize instrument to JSON."""
         return json.dumps(self.instrument_tree)
 
-    #     def mutate(self):
-    #         """Mutate an instrument."""
-    #         traverses = 4
-    # a = self.instrument_tree['children']
-    # for i in range(traverses):
-    #     n = len(a)
-    #     cc = random.randint(0,n-1)    #no. to pick a child out
-    #     if i < traverses:
-    #         if a[cc]['children'] == []: 
-    #       a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree
-    #       break
-    #         else:
-    #       a = a[cc]['children']
-    #     else:
-    #   a[cc] = Instrument.random({"const_prob": 0.7, "max_children": 4}).instrument_tree #something random
+    def to_graph(self, filename='graph.jpg'):
+        """Generates a jpg-file displaying the instrument tree."""
+        
+        self.graph_filename = filename
+        
+        if self.graph_filename.endswith('.jpg'):
+            dot_filename = self.graph_filename[:-4] + '.dot'
+            jpg_filename = self.graph_filename
+        else:
+            dot_filename = self.graph_filename + '.dot'
+            jpg_filename = self.graph_filename + '.jpg'
 
+        graph = GvGen()
+               
+        stack = []
+        new_parents = []
+        stack.append(self.instrument_tree)
+
+        root = True
+        while (len(stack) > 0):
+            if root:
+                sub_tree = stack.pop()
+                node = graph.newItem(sub_tree["code"]["name"])
+                root = False        
+            else:
+                sub_tree = stack.pop()
+                node = new_parents.pop()  
+
+            if len(sub_tree["children"]) > 0:    
+                for child in (sub_tree["children"]):
+                    child_node = graph.newItem(child["code"]["name"])
+                    graph.newLink(node, child_node)
+        
+                    if child["code"]["name"] != "const":
+                        stack.append(child)
+                        new_parents.append(child_node)
+    
+        f = open(dot_filename,'w')            
+        graph.dot(f)
+        f.close()
+        os.system('dot -Tjpg %(dot)s -o %(jpg)s' %{"dot": dot_filename, "jpg": jpg_filename})
+        print "Graph was generated in file '%s'." %jpg_filename
 
     @classmethod
     def random(cls, **keywords):
@@ -110,7 +136,7 @@ class Instrument(object):
             print "got roottype"
             filtered = get_only_type(root_type, opcodes)
         else:
-            print "standard random"
+            #print "standard random"
             filtered = get_only_not_type("k", opcodes)
         root = Instrument.__make_node(random.choice(filtered))
         todo = deque([root])
@@ -227,14 +253,7 @@ Individual.register(Instrument)
 
 
 if __name__ == '__main__':
-    comp = open("../tests/fixtures/render_error.json").read()
-    i = Instrument(comp)
-    # i = Instrument.random(const_prob=0.6, max_children=4,
-    #     opcodes_file="opcodes_new.json")
     
-    # csd = csound_adapter.CSD()
-    # csd.orchestra(i)
-    # csd.score('i 1 0 2')
-    # csd.play()
-    # print i.to_json()
-    print i.to_instr()
+    i = Instrument.random(const_prob=0.8, max_children=8)
+    i.to_graph('test.jpg')
+    os.system('eog test.jpg')

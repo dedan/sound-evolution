@@ -77,7 +77,10 @@ class Instrument(object):
             jpg_filename = self.graph_filename + '.jpg'
 
         graph = GvGen()
-               
+        graph.styleDefaultAppend("color","red")
+        graph.styleDefaultAppend("style", "filled")
+        graph.styleDefaultAppend("fontcolor", "white")
+        
         stack = []
         new_parents = []
         stack.append(self.instrument_tree)
@@ -86,21 +89,34 @@ class Instrument(object):
         while (len(stack) > 0):
             if root:
                 sub_tree = stack.pop()
-                node = graph.newItem(sub_tree["code"]["name"])
+                node = graph.newItem(sub_tree["code"]["symbol"])
                 root = False        
             else:
                 sub_tree = stack.pop()
                 node = new_parents.pop()  
 
             if len(sub_tree["children"]) > 0:    
-                for child in (sub_tree["children"]):
-                    child_node = graph.newItem(child["code"]["name"])
-                    graph.newLink(node, child_node)
-        
-                    if child["code"]["name"] != "const":
+                for i, child in enumerate(sub_tree["children"]):
+
+                    if child["code"]["name"] == "const":
+                        const_value = round(float(child["code"]["value"]), 2)
+                        child_node = graph.newItem(const_value)
+                        graph.styleAppend("const", "shape", "rectangle")
+                        graph.styleAppend("const", "color", "black")
+                        graph.styleAppend("const", "style", "filled")
+                        graph.styleApply("const", child_node)
+
+                    else:
+                        child_node = graph.newItem(child["code"]["symbol"])
                         stack.append(child)
                         new_parents.append(child_node)
-    
+                                       
+                    curr_link = graph.newLink(node, child_node)
+                    
+
+                    if sub_tree["code"]["type"] == "code":
+                        graph.propertyAppend(curr_link, "label", sub_tree["code"]["params"][i]["name"])
+                        
         f = open(dot_filename,'w')            
         graph.dot(f)
         f.close()

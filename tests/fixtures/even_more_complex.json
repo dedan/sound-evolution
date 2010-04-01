@@ -1,0 +1,336 @@
+{
+    "code": 
+    {
+        "name": "div",
+         "symbol": "/",
+         "intype": "x",
+         "outtype": "a",
+         "params": 
+        [
+        ],
+         "type": "math"
+    },
+     "children": 
+    [
+        {
+            "code": 
+            {
+                "outtype": "x",
+                 "type": "const",
+                 "name": "const",
+                 "value": "87.0029244004"
+            },
+             "children": 
+            [
+            ]
+        },
+         
+        {
+            "code": 
+            {
+                "outtype": "x",
+                 "type": "const",
+                 "name": "const",
+                 "value": "63.3559456138"
+            },
+             "children": 
+            [
+            ]
+        },
+         
+        {
+            "code": 
+            {
+                "params": 
+                [
+                    {
+                        "max": 1,
+                         "type": "k",
+                         "name": "amp",
+                         "min": 0
+                    },
+                     
+                    {
+                        "max": 20000,
+                         "type": "k",
+                         "name": "freq",
+                         "min": 20
+                    },
+                     
+                    {
+                        "max": 1,
+                         "type": "t",
+                         "name": "table",
+                         "min": 1
+                    }
+                ],
+                 "symbol": "oscil",
+                 "outtype": "k",
+                 "type": "code",
+                 "name": "koscil"
+            },
+             "children": 
+            [
+                {
+                    "code": 
+                    {
+                        "name": "sub",
+                         "symbol": "-",
+                         "intype": "k",
+                         "outtype": "k",
+                         "params": 
+                        [
+                        ],
+                         "type": "math"
+                    },
+                     "children": 
+                    [
+                        {
+                            "code": 
+                            {
+                                "name": "div",
+                                 "symbol": "/",
+                                 "intype": "k",
+                                 "outtype": "k",
+                                 "params": 
+                                [
+                                ],
+                                 "type": "math"
+                            },
+                             "children": 
+                            [
+                                {
+                                    "code": 
+                                    {
+                                        "outtype": "x",
+                                         "type": "const",
+                                         "name": "const",
+                                         "value": "37.1460496255"
+                                    },
+                                     "children": 
+                                    [
+                                    ]
+                                },
+                                 
+                                {
+                                    "code": 
+                                    {
+                                        "outtype": "x",
+                                         "type": "const",
+                                         "name": "const",
+                                         "value": "0.69495450812"
+                                    },
+                                     "children": 
+                                    [
+                                    ]
+                                },
+                                 
+                                {
+                                    "code": 
+                                    {
+                                        "params": 
+                                        [
+                                            {
+                                                "max": 1,
+                                                 "type": "k",
+                                                 "name": "amp",
+                                                 "min": 0
+                                            }
+                                        ],
+                                         "symbol": "rand",
+                                         "outtype": "k",
+                                         "type": "code",
+                                         "name": "controlwhitenoise"
+                                    },
+                                     "children": 
+                                    [
+                                        {
+                                            "code": 
+                                            {
+                                                "outtype": "x",
+                                                 "type": "const",
+                                                 "name": "const",
+                                                 "value": "0.539953758525"
+                                            },
+                                             "children": 
+                                            [
+                                            ]
+                                        }
+                                    ]
+                                },
+                                 
+                                {
+                                    "code": 
+                                    {
+                                        "outtype": "x",
+                                         "type": "const",
+                                         "name": "const",
+                                         "value": "70.7328910055"
+                                    },
+                                     "children": 
+                                    [
+                                    ]
+                                }
+                            ]
+                        },
+                         
+                        {
+                            "code": 
+                            {
+                                "outtype": "x",
+                                 "type": "const",
+                                 "name": "const",
+                                 "value": "83.7957195999"
+                            },
+                             "children": 
+                            [
+                            ]
+                        }
+                    ]
+                },
+                 
+                {
+                    "code": 
+                    {
+                        "outtype": "x",
+                         "type": "const",
+                         "name": "const",
+                         "value": "11820.1639084"
+                    },
+                     "children": 
+                    [
+                    ]
+                },
+                 
+                {
+                    "code": 
+                    {
+                        "outtype": "t",
+                         "type": "const",
+                         "name": "const",
+                         "value": "1"
+                    },
+                     "children": 
+                    [
+                    ]
+                }
+            ]
+        },
+         
+        {
+            "code": 
+            {
+                "params": 
+                [
+                    {
+                        "max": 20000,
+                         "type": "x",
+                         "name": "freq",
+                         "min": 20
+                    }
+                ],
+                 "symbol": "phasor",
+                 "outtype": "a",
+                 "type": "code",
+                 "name": "aphasor"
+            },
+             "children": 
+            [
+                {
+                    "code": 
+                    {
+                        "params": 
+                        [
+                            {
+                                "max": 1,
+                                 "type": "k",
+                                 "name": "amp",
+                                 "min": 0
+                            },
+                             
+                            {
+                                "max": 20,
+                                 "type": "k",
+                                 "name": "freq",
+                                 "min": 0
+                            },
+                             
+                            {
+                                "max": 5,
+                                 "type": "t",
+                                 "name": "waveform",
+                                 "min": 0
+                            }
+                        ],
+                         "symbol": "lfo",
+                         "outtype": "x",
+                         "type": "code",
+                         "name": "lfo"
+                    },
+                     "children": 
+                    [
+                        {
+                            "code": 
+                            {
+                                "params": 
+                                [
+                                    {
+                                        "max": 1,
+                                         "type": "k",
+                                         "name": "amp",
+                                         "min": 0
+                                    }
+                                ],
+                                 "symbol": "rand",
+                                 "outtype": "k",
+                                 "type": "code",
+                                 "name": "controlwhitenoise"
+                            },
+                             "children": 
+                            [
+                                {
+                                    "code": 
+                                    {
+                                        "outtype": "x",
+                                         "type": "const",
+                                         "name": "const",
+                                         "value": "0.621157975637"
+                                    },
+                                     "children": 
+                                    [
+                                    ]
+                                }
+                            ]
+                        },
+                         
+                        {
+                            "code": 
+                            {
+                                "outtype": "x",
+                                 "type": "const",
+                                 "name": "const",
+                                 "value": "3.75444323997"
+                            },
+                             "children": 
+                            [
+                            ]
+                        },
+                         
+                        {
+                            "code": 
+                            {
+                                "outtype": "t",
+                                 "type": "const",
+                                 "name": "const",
+                                 "value": "1"
+                            },
+                             "children": 
+                            [
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

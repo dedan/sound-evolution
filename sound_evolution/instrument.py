@@ -14,7 +14,7 @@ class Instrument(object):
 
     __CONST_PROB = 0.7
     __MAX_CHILDREN = 4
-    __OPCODES_FILE = "opcodes_new.json"
+    __OPCODES_FILE = "opcodes_extended.json"
 
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string or from a tree of python objects """
@@ -175,6 +175,7 @@ class Instrument(object):
                 for i in range(n_children):
                     if random.random() > const_prob:
                         filtered = get_only_type(tmp_tree["code"]["intype"], opcodes)
+                        filtered = [f for f in filtered if f["type"] == "code"]
                         random_node = Instrument.__make_node(random.choice(filtered))
                         todo.append(random_node)
                     else:
@@ -192,12 +193,12 @@ class Instrument(object):
                         if param["max"] == param["min"]:
                             random_const = param["max"]
                         else:
-                            random_const = random.randrange(param["min"], param["max"], 1)
+                            random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
                         const_code = Instrument.__make_const_code("t", random_const)
                         random_node = Instrument.__make_node(const_code)
 
                     # if it is below constant probability also plug in constant
-                    elif random.random() < const_prob:
+                    elif param["type"] != "a" and random.random() < const_prob:
                         # choose random constant according to input range and type
                         random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
                         const_code = Instrument.__make_const_code("x", random_const)

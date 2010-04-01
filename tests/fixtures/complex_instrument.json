@@ -42,7 +42,7 @@
             "name": "const",
             "type": "const",
             "value": 1,
-            "outtype" : "x"
+            "outtype" : "t"
           },
           "children": []
         }

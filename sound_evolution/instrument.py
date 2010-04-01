@@ -224,22 +224,18 @@ class Instrument(object):
         flat[winner]["code"] = random_tree["code"]
         flat[winner]["children"] = random_tree["children"]
 
-    def ficken(self, individual=None):
+    def ficken(self, other):
         """Cross a tree-instrument with another one."""
         flatself = Instrument.__traverse(self.instrument_tree)
         flatother = Instrument.__traverse(other.instrument_tree)
         candidates = []
-        while (candidates == []):
+        while not candidates:
             winner = random.randint(0,len(flatself)-1)
-            crosstype = flatself[winner]["code"]["type"]
-            for item in flatother:
-                if item["code"]["type"] == crosstype:
-                    candidates.append(item)
+            crosstype = flatself[winner]["code"]["outtype"]
+            candidates = [cand for cand in flatother if cand["code"]["outtype"] == crosstype]
         winner2 = random.randint(0,len(candidates)-1)
-        temp = flatself[winner]
-        flatself[winner] = candidates[winner2]
-        candidates[winner2] = temp
-        return
+        flatself[winner]["code"] = candidates[winner2]["code"]
+        flatself[winner]["children"] = candidates[winner2]["children"]        
 
     @staticmethod
     def __traverse(node):
@@ -248,7 +244,7 @@ class Instrument(object):
             if child["code"]["type"] == "const":
                 flat.append(child)
             else:
-                flat.extend(Instrument.traverse(child))
+                flat.extend(Instrument.__traverse(child))
         flat.append(node)
         return flat        
         
@@ -274,6 +270,11 @@ Individual.register(Instrument)
 
 if __name__ == '__main__':
     
-    i = Instrument.random(const_prob=0.8, max_children=8)
-    i.to_graph('test.jpg')
-    os.system('eog test.jpg')
+    i = Instrument.random(const_prob=0.7, max_children=4)
+    csd = csound_adapter.CSD()
+    csd.orchestra(i)
+    csd.score('i 1 0 2')
+    csd.play()
+    print i.to_json()
+    print i.to_instr()
+    

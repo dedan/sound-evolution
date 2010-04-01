@@ -15,7 +15,7 @@ def setup():
 def test_play():
     """Should play an instrument to sound card."""
     global csd
-    csd.play()
+    # csd.play()
     assert os.path.exists(csd.output_csd_filename)
     assert os.path.getsize(csd.output_csd_filename) > 0
 

@@ -107,10 +107,8 @@ class Instrument(object):
 
         # select random root element (with a output)
         if root_type:
-            print "got roottype"
             filtered = get_only_type(root_type, opcodes)
         else:
-            print "standard random"
             filtered = get_only_not_type("k", opcodes)
         root = Instrument.__make_node(random.choice(filtered))
         todo = deque([root])
@@ -174,9 +172,9 @@ class Instrument(object):
         """Mutate an instrument."""
         flat = Instrument.traverse(self.instrument_tree)
         winner = random.randint(0,len(flat)-1)
-        # flat[winner] = Instrument.random(root_type=flat[winner]["code"]["outtype"]).instrument_tree
-        flat[5]["children"]
-
+        random_tree = Instrument.random(root_type=flat[winner]["code"]["outtype"]).instrument_tree
+        flat[winner]["code"] = random_tree["code"]
+        flat[winner]["children"] = random_tree["children"]
 
     def ficken(self, individual=None):
         """Cross a tree-instrument with another one."""
@@ -198,10 +196,10 @@ class Instrument(object):
     @staticmethod
     def traverse(node):
         flat = []    
-        for child in node['children']:
+        for child in node["children"]:
             if child["code"]["type"] == "const":
                 flat.append(child)
-            else :
+            else:
                 flat.extend(Instrument.traverse(child))
         flat.append(node)
         return flat        

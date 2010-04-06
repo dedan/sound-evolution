@@ -1,6 +1,6 @@
 import os, re
 import nose.tools
-	
+
 import sound_evolution as se
 
 def setUp():

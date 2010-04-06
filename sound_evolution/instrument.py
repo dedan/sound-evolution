@@ -48,10 +48,10 @@ class Instrument(object):
     @staticmethod
     def __render(node, data, n, out_type):
         """render the code for a node"""
-        
+
         if out_type == "x":
             out_type = random.choice(["a", "k"])
-            
+
         code = ""
         var = "%s%d" % (out_type, n)
         if node["code"]["type"] == "code":
@@ -69,9 +69,9 @@ class Instrument(object):
 
     def to_graph(self, filename='graph.jpg'):
         """Generates a jpg-file displaying the instrument tree."""
-        
+
         self.graph_filename = filename
-        
+
         if self.graph_filename.endswith('.jpg'):
             dot_filename = self.graph_filename[:-4] + '.dot'
             jpg_filename = self.graph_filename
@@ -83,7 +83,7 @@ class Instrument(object):
         graph.styleDefaultAppend("color","red")
         graph.styleDefaultAppend("style", "filled")
         graph.styleDefaultAppend("fontcolor", "white")
-        
+
         stack = []
         new_parents = []
         stack.append(self.instrument_tree)
@@ -93,12 +93,12 @@ class Instrument(object):
             if root:
                 sub_tree = stack.pop()
                 node = graph.newItem(sub_tree["code"]["symbol"])
-                root = False        
+                root = False
             else:
                 sub_tree = stack.pop()
-                node = new_parents.pop()  
+                node = new_parents.pop()
 
-            if len(sub_tree["children"]) > 0:    
+            if len(sub_tree["children"]) > 0:
                 for i, child in enumerate(sub_tree["children"]):
 
                     if child["code"]["name"] == "const":
@@ -113,14 +113,14 @@ class Instrument(object):
                         child_node = graph.newItem(child["code"]["symbol"])
                         stack.append(child)
                         new_parents.append(child_node)
-                                       
+
                     curr_link = graph.newLink(node, child_node)
-                    
+
 
                     if sub_tree["code"]["type"] == "code":
                         graph.propertyAppend(curr_link, "label", sub_tree["code"]["params"][i]["name"])
-                        
-        f = open(dot_filename,'w')            
+
+        f = open(dot_filename,'w')
         graph.dot(f)
         f.close()
         os.system('dot -Tjpg %(dot)s -o %(jpg)s' %{"dot": dot_filename, "jpg": jpg_filename})
@@ -142,7 +142,7 @@ class Instrument(object):
             else:
                 types = [the_type]
             return [op for op in opcodes if op["outtype"] in types]
-            
+
         def get_only_not_type(the_type, opcodes):
             """get only opcodes that don't have a certain type"""
             return [op for op in opcodes if op["outtype"] != the_type]
@@ -152,7 +152,7 @@ class Instrument(object):
 
         # select random root element (with a output)
         if root_type and root_type == "t":
-            # TODO this 1 here has to be changed to a randint when we have more 
+            # TODO this 1 here has to be changed to a randint when we have more
             # than 1 table in the score
             root = Instrument.__make_node(Instrument.__make_const_code("t", 1))
             inst = Instrument(root)
@@ -170,7 +170,7 @@ class Instrument(object):
 
         while todo:
             tmp_tree = todo.popleft()
-            
+
             # if it is a math operator
             if tmp_tree["code"]["type"] == "math":
 
@@ -190,7 +190,7 @@ class Instrument(object):
             # if it is an opcode
             else:
                 for param in tmp_tree["code"]["params"]:
-                    
+
                     # if param type is t alwys plug in a constant
                     if param["type"] == "t":
                         if param["max"] == param["min"]:
@@ -218,8 +218,7 @@ class Instrument(object):
 
         inst = Instrument(root)
         return inst
-        
-        
+
     def mutate(self):
         """Mutate an instrument."""
         flat = Instrument.__traverse(self.instrument_tree)
@@ -241,26 +240,25 @@ class Instrument(object):
                 candidates = [cand for cand in flatother if cand["code"]["outtype"] == crosstype]
             winner2 = random.randint(0,len(candidates)-1)
             flatself[winner]["code"] = candidates[winner2]["code"]
-            flatself[winner]["children"] = candidates[winner2]["children"]     
+            flatself[winner]["children"] = candidates[winner2]["children"]
             if other.to_json() != self.to_json():
                 return
-        raise Exception("ficken was not successfull")   
+        raise Exception("ficken was not successfull")
 
     @staticmethod
     def __traverse(node):
-        flat = []    
+        flat = []
         for child in node["children"]:
             if child["code"]["type"] == "const":
                 flat.append(child)
             else:
                 flat.extend(Instrument.__traverse(child))
         flat.append(node)
-        return flat        
-        
+        return flat
+
     def fitness(self):
         """Score of the instrument."""
         return
-
 
     @staticmethod
     def __make_node(code):
@@ -272,13 +270,10 @@ class Instrument(object):
         """make a new constant"""
         return {"name": "const", "type": "const", "outtype": outtype, "value": str(val)}
 
-
-
 Individual.register(Instrument)
 
 
 if __name__ == '__main__':
-    
     i = Instrument.random(const_prob=0.7, max_children=4)
     csd = csound_adapter.CSD()
     csd.orchestra(i)
@@ -286,4 +281,3 @@ if __name__ == '__main__':
     csd.play()
     print i.to_json()
     print i.to_instr()
-    

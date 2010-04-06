@@ -14,7 +14,7 @@ class Instrument(object):
 
     __CONST_PROB = 0.7
     __MAX_CHILDREN = 4
-    __OPCODES_FILE = "opcodes_new.json"
+    __OPCODES_FILE = "opcodes_extended.json"
 
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string or from a tree of python objects """
@@ -77,7 +77,10 @@ class Instrument(object):
             jpg_filename = self.graph_filename + '.jpg'
 
         graph = GvGen()
-               
+        graph.styleDefaultAppend("color","red")
+        graph.styleDefaultAppend("style", "filled")
+        graph.styleDefaultAppend("fontcolor", "white")
+        
         stack = []
         new_parents = []
         stack.append(self.instrument_tree)
@@ -86,21 +89,34 @@ class Instrument(object):
         while (len(stack) > 0):
             if root:
                 sub_tree = stack.pop()
-                node = graph.newItem(sub_tree["code"]["name"])
+                node = graph.newItem(sub_tree["code"]["symbol"])
                 root = False        
             else:
                 sub_tree = stack.pop()
                 node = new_parents.pop()  
 
             if len(sub_tree["children"]) > 0:    
-                for child in (sub_tree["children"]):
-                    child_node = graph.newItem(child["code"]["name"])
-                    graph.newLink(node, child_node)
-        
-                    if child["code"]["name"] != "const":
+                for i, child in enumerate(sub_tree["children"]):
+
+                    if child["code"]["name"] == "const":
+                        const_value = round(float(child["code"]["value"]), 2)
+                        child_node = graph.newItem(const_value)
+                        graph.styleAppend("const", "shape", "rectangle")
+                        graph.styleAppend("const", "color", "black")
+                        graph.styleAppend("const", "style", "filled")
+                        graph.styleApply("const", child_node)
+
+                    else:
+                        child_node = graph.newItem(child["code"]["symbol"])
                         stack.append(child)
                         new_parents.append(child_node)
-    
+                                       
+                    curr_link = graph.newLink(node, child_node)
+                    
+
+                    if sub_tree["code"]["type"] == "code":
+                        graph.propertyAppend(curr_link, "label", sub_tree["code"]["params"][i]["name"])
+                        
         f = open(dot_filename,'w')            
         graph.dot(f)
         f.close()
@@ -159,6 +175,7 @@ class Instrument(object):
                 for i in range(n_children):
                     if random.random() > const_prob:
                         filtered = get_only_type(tmp_tree["code"]["intype"], opcodes)
+                        filtered = [f for f in filtered if f["type"] == "code"]
                         random_node = Instrument.__make_node(random.choice(filtered))
                         todo.append(random_node)
                     else:
@@ -176,12 +193,12 @@ class Instrument(object):
                         if param["max"] == param["min"]:
                             random_const = param["max"]
                         else:
-                            random_const = random.randrange(param["min"], param["max"], 1)
+                            random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
                         const_code = Instrument.__make_const_code("t", random_const)
                         random_node = Instrument.__make_node(const_code)
 
                     # if it is below constant probability also plug in constant
-                    elif random.random() < const_prob:
+                    elif param["type"] != "a" and random.random() < const_prob:
                         # choose random constant according to input range and type
                         random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
                         const_code = Instrument.__make_const_code("x", random_const)

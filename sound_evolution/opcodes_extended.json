@@ -1,0 +1,263 @@
+[
+  {
+    "name": "aoscil",
+    "type": "code",
+    "symbol": "oscil",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "x", "min": 0, "max": 1},
+      {"name": "freq", "type": "x", "min": 20, "max": 20000},
+      {"name": "table", "type": "t", "min": 1, "max": 1}
+    ]
+  },
+  {
+    "name": "koscil",
+    "type": "code",
+    "symbol": "oscil",
+    "outtype": "k",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 20, "max": 20000},
+      {"name": "table", "type": "t", "min": 1, "max": 1}
+    ]
+  },
+  {
+    "name": "lfo",
+    "symbol": "lfo",
+    "type": "code",
+    "outtype": "x",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 0, "max": 20},
+      {"name": "waveform", "type": "t", "min": 0, "max": 5}
+    ]
+  },
+  {
+    "name": "mpulse",
+    "type": "code",
+    "symbol": "mpulse",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "int", "type": "k", "min": 0, "max": 1}
+    ]
+  },
+  {
+    "name": "kphasor",
+    "type": "code",
+    "symbol": "phasor",
+    "outtype": "k",
+    "params": [
+      {"name": "freq", "type": "k", "min": 20, "max": 20000}
+    ]
+  },
+  {
+    "name": "aphasor",
+    "type": "code",
+    "symbol": "phasor",
+    "outtype": "a",
+    "params": [
+      {"name": "freq", "type": "x", "min": 20, "max": 20000}
+    ]
+  },
+  {
+    "name": "outwhitenoise",
+    "type": "code",
+    "symbol": "rand",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1}
+    ]
+  },
+  {
+    "name": "controlwhitenoise",
+    "type": "code",
+    "symbol": "rand",
+    "outtype": "k",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1}
+    ]
+  },
+  {
+    "name": "klinen",
+    "type": "code",
+    "symbol": "linen",
+    "outtype": "k",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "rise", "type": "t", "min": 0, "max": 5},
+      {"name": "dur", "type": "t", "min": 1, "max": 5},
+      {"name": "dec", "type": "t", "min": 0, "max": 5}
+    ]
+  },
+  {
+    "name": "alinen",
+    "type": "code",
+    "symbol": "linen",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "x", "min": 0, "max": 1},
+      {"name": "rise", "type": "t", "min": 0, "max": 1},
+      {"name": "dur", "type": "t", "min": 1, "max": 5},
+      {"name": "dec", "type": "t", "min": 0, "max": 1}
+    ]
+  },
+  {
+    "name": "reverb",
+    "type": "code",
+    "symbol": "reverb",
+    "outtype": "a",
+    "params": [
+      {"name": "sig", "type": "a"},
+      {"name": "rvt", "type": "k", "min": 0, "max": 1}
+    ]
+  },
+  {
+    "name": "comb",
+    "type": "code",
+    "symbol": "comb",
+    "outtype": "a",
+    "params": [
+      {"name": "sig", "type": "a"},
+      {"name": "rvt", "type": "k", "min": 0, "max": 1},
+      {"name": "lpt", "type": "t", "min": 1, "max": 5}
+    ]
+  },
+  {
+    "name": "alpass",
+    "type": "code",
+    "symbol": "alpass",
+    "outtype": "a",
+    "params": [
+      {"name": "sig", "type": "a"},
+      {"name": "rvt", "type": "k", "min": 0, "max": 1},
+      {"name": "lpt", "type": "t", "min": 1, "max": 5}
+    ]
+  },
+  {
+    "name": "alpass",
+    "type": "code",
+    "symbol": "alpass",
+    "outtype": "a",
+    "params": [
+      {"name": "sig", "type": "a"},
+      {"name": "rvt", "type": "k", "min": 0, "max": 1},
+      {"name": "lpt", "type": "t", "min": 1, "max": 5}
+    ]
+  },
+  {
+    "name": "wgclar",
+    "type": "code",
+    "symbol": "wgclar",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 15, "max": 25000},
+      {"name": "stiff", "type": "k", "min": -0.44, "max": -0.18},
+      {"name": "att", "type": "t", "min": 0.1, "max": 0.5},
+      {"name": "detk", "type": "t", "min": 0.1, "max": 0.5},
+      {"name": "ngain", "type": "k", "min": 0, "max": 0.5},
+      {"name": "vibf", "type": "k", "min": 0, "max": 12},
+      {"name": "vamp", "type": "k", "min": 0, "max": 1},
+      {"name": "fn", "type": "t", "min": 1, "max": 1}
+    ]
+  },
+  {
+    "name": "wgflute",
+    "type": "code",
+    "symbol": "wgflute",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 15, "max": 25000},
+      {"name": "jet", "type": "k", "min": 0.08, "max": 0.56},
+      {"name": "att", "type": "t", "min": 0.1, "max": 0.5},
+      {"name": "detk", "type": "t", "min": 0.1, "max": 0.5},
+      {"name": "ngain", "type": "k", "min": 0, "max": 0.5},
+      {"name": "vibf", "type": "k", "min": 0, "max": 12},
+      {"name": "vamp", "type": "k", "min": 0, "max": 1},
+      {"name": "fn", "type": "t", "min": 1, "max": 1}
+    ]
+  },
+  {
+    "name": "moog",
+    "type": "code",
+    "symbol": "moog",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "k", "min": 0, "max": 1},
+      {"name": "freq", "type": "k", "min": 15, "max": 25000},
+      {"name": "filtq", "type": "k", "min": 0.8, "max": 0.9},
+      {"name": "filtrate", "type": "k", "min": 0, "max": 0.0002},
+      {"name": "vibf", "type": "k", "min": 0, "max": 12},
+      {"name": "vamp", "type": "k", "min": 0, "max": 1},
+      {"name": "afn", "type": "t", "min": 1, "max": 1},
+      {"name": "wfn", "type": "t", "min": 1, "max": 1},
+      {"name": "vfn", "type": "t", "min": 1, "max": 1}
+    ]
+  },
+  {
+    "name": "add",
+    "type": "math",
+    "symbol": "+",
+    "outtype": "a",
+    "intype": "x",
+    "params": []
+  },
+  {
+    "name": "sub",
+    "type": "math",
+    "symbol": "-",
+    "outtype": "a",
+    "intype": "x",
+    "params": []
+  },
+  {
+    "name": "mult",
+    "type": "math",
+    "symbol": "*",
+    "outtype": "a",
+    "intype": "x",
+    "params": []
+  },
+  {
+    "name": "div",
+    "type": "math",
+    "symbol": "/",
+    "outtype": "a",
+    "intype": "x",
+    "params": []
+  },
+  {
+    "name": "add",
+    "type": "math",
+    "symbol": "+",
+    "outtype": "k",
+    "intype": "k",
+    "params": []
+  },
+  {
+    "name": "sub",
+    "type": "math",
+    "symbol": "-",
+    "outtype": "k",
+    "intype": "k",
+    "params": []
+  },
+  {
+    "name": "mult",
+    "type": "math",
+    "symbol": "*",
+    "outtype": "k",
+    "intype": "k",
+    "params": []
+  },
+  {
+    "name": "div",
+    "type": "math",
+    "symbol": "/",
+    "outtype": "k",
+    "intype": "k",
+    "params": []
+  }
+]

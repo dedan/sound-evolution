@@ -11,17 +11,15 @@ f.pack_propagate(0)
 f.pack()
 
 def callback():
-    render = 0
-    csd_file = "__test_out.csd"
-    params = {"const_prob": 0.7, "max_children": 4}
-    i = se.instrument.Instrument.random(params)
-    csd = se.csound_adapter.CSD(csd_file, render)
+    
+    i = se.instrument.Instrument.random(const_prob=0.7, max_children=4)
+    csd = se.csound_adapter.CSD()
     csd.orchestra(i)
     csd.score('i 1 0 2')
-    csd.output(csd_file)
+    csd.play()
 
 b = Button(f, command=callback)
-b["text"] = "SoundEvolution"   
+b["text"] = "> Create Sound <"   
 b["background"] = "green"
 b.pack(fill=BOTH, expand=0.8)   
 

@@ -5,7 +5,7 @@ import nose.tools
 
 import sound_evolution as se
 
-def setup():
+def setUp():
     global simple_json, invalid_json, complex_json, complex_orc, render_err_json, render_err_orc
     global more_complex_json
     simple_json = open(

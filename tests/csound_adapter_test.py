@@ -3,7 +3,7 @@ import nose.tools
 	
 import sound_evolution as se
 
-def setup():
+def setUp():
     global csd
     complex_json = open(
         os.path.join(os.path.dirname(__file__),

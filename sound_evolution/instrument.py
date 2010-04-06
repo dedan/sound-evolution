@@ -27,7 +27,9 @@ class Instrument(object):
         """Generate csound ocr code."""
         n = 0
         (code, data, n) = self.__class__.__to_instr(self.instrument_tree, n, "a")
-        return code + "out\ta%d" % (n-1)
+        return code \
+            + "a%d\tclip\ta%d, 0, 1\n" % (n, n-1) \
+            + "out\ta%d" % n
 
     @staticmethod
     def __to_instr(node, n, out_type):

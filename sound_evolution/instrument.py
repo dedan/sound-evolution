@@ -1,9 +1,7 @@
 """A single csound instrument."""
 
-import os
-import abc
+import os, abc, random, copy
 import simplejson as json
-import random
 from collections import deque
 import csound_adapter
 from gvgen import *
@@ -24,10 +22,21 @@ class Instrument(object):
         else:
             self.instrument_tree = instrument_tree
 
+    def __eq__(self, other):
+        if isinstance(other, Instrument):
+            return self.to_json() == other.to_json()
+        return NotImplemented
+
+    def __ne__(self, other):
+        r = self.__eq__(other)
+        if r is NotImplemented:
+            return r
+        return not r
+
     def to_instr(self):
         """Generate csound ocr code."""
         n = 0
-        (code, data, n) = self.__class__.__to_instr(self.instrument_tree, n, "a")
+        (code, data, n) = Instrument.__to_instr(self.instrument_tree, n, "a")
         return code \
             + "a%d\tclip\ta%d, 0, 1\n" % (n, n-1) \
             + "out\ta%d" % n
@@ -220,29 +229,41 @@ class Instrument(object):
         return inst
 
     def mutate(self):
-        """Mutate an instrument."""
-        flat = Instrument.__traverse(self.instrument_tree)
-        winner = random.randint(0,len(flat)-1)
-        random_tree = Instrument.random(root_type=flat[winner]["code"]["outtype"]).instrument_tree
+        """Mutate an instrument.
+
+        This method will return a mutated clone while itself remains
+        unchanged. Mutation works by replacing an arbitrary subtree by
+        a random tree structure.
+
+        """
+        mutant = copy.deepcopy(self)
+        flat = Instrument.__traverse(mutant.instrument_tree)
+        winner = random.randint(0, len(flat) - 1)
+        random_tree = Instrument.random(
+            root_type = flat[winner]["code"]["outtype"]).instrument_tree
         flat[winner]["code"] = random_tree["code"]
         flat[winner]["children"] = random_tree["children"]
+        return mutant
 
     def ficken(self, other):
         """Cross a tree-instrument with another one."""
-        flatself = Instrument.__traverse(self.instrument_tree)
-        flatother = Instrument.__traverse(other.instrument_tree)
+        a = copy.deepcopy(self)
+        b = copy.deepcopy(other)
+        flata = Instrument.__traverse(a.instrument_tree)
+        flatb = Instrument.__traverse(b.instrument_tree)
         candidates = []
         i = 0
-        while i < self.__class__.__MAX_FICKEN:
+        while i < Instrument.__MAX_FICKEN:
             while not candidates:
-                winner = random.randint(0,len(flatself)-1)
-                crosstype = flatself[winner]["code"]["outtype"]
-                candidates = [cand for cand in flatother if cand["code"]["outtype"] == crosstype]
-            winner2 = random.randint(0,len(candidates)-1)
-            flatself[winner]["code"] = candidates[winner2]["code"]
-            flatself[winner]["children"] = candidates[winner2]["children"]
-            if other.to_json() != self.to_json():
-                return
+                winner = random.randint(0, len(flata) - 1)
+                crosstype = flata[winner]["code"]["outtype"]
+                candidates = [cand for cand in flatb \
+                                  if cand["code"]["outtype"] == crosstype]
+            winner2 = random.randint(0, len(candidates) - 1)
+            flata[winner]["code"] = candidates[winner2]["code"]
+            flata[winner]["children"] = candidates[winner2]["children"]
+            if a.to_json() != b.to_json():
+                return a
         raise Exception("ficken was not successfull")
 
     @staticmethod

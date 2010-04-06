@@ -1,6 +1,6 @@
 """Test Instrument class."""
 
-import os
+import os, copy
 import nose.tools
 
 import sound_evolution as se
@@ -71,21 +71,37 @@ def test_mutation():
     """The mutation produces something different from the original thing"""
     global tone_json
     i = se.instrument.Instrument(tone_json)
-    old_json = i.to_json()
+    mutant = i.mutate()
+    assert mutant != i
+
+def test_mutation_no_alter():
+    """Mutation should not alter intrument itself."""
+    global tone_json
+    i = se.instrument.Instrument(tone_json)
+    clone = copy.copy(i)
     i.mutate()
-    assert old_json != i.to_json
+    assert i == clone
 
 def test_ficken():
     """The crossover of two instruments creates a new instrument not equal to either of the originals"""
     global tone_json, complex_json
-    i = se.instrument.Instrument(complex_json)
-    j = se.instrument.Instrument(tone_json)
-    j1 = se.instrument.Instrument(tone_json)
-    j.ficken(i)
-    assert j1.to_json() != j.to_json()
-    assert i.to_json() != j.to_json()
-    assert type(j) == se.instrument.Instrument
-    assert type(i) == se.instrument.Instrument
+    pa = se.instrument.Instrument(complex_json)
+    ma = se.instrument.Instrument(tone_json)
+    child = pa.ficken(ma)
+    assert pa != child
+    assert ma != child
+    assert type(child) == se.instrument.Instrument
+
+def test_ficken_no_alter():
+    """Ficken should not alter intrument itself."""
+    global tone_json, complex_json
+    pa = se.instrument.Instrument(complex_json)
+    ma = se.instrument.Instrument(tone_json)
+    pa_clone = copy.copy(pa)
+    ma_clone = copy.copy(ma)
+    pa.ficken(ma)
+    assert ma == ma_clone
+    assert pa == pa_clone
 
 def test_to_instr():
     """test if a simple instrument produces the valid csound code that we wrote by hand"""

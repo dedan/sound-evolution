@@ -6,29 +6,29 @@ import nose.tools
 import sound_evolution as se
 
 def setUp():
-    global simple_json, invalid_json, complex_json, complex_orc, render_err_json, render_err_orc
-    global more_complex_json
-    simple_json = open(
+    global empty_json, invalid_json, tone_json, tone_orc, complex_json, \
+        render_err_json, render_err_orc
+    empty_json = open(
         os.path.join(os.path.dirname(__file__),
-                     "fixtures", "simple_instrument.json")).read()
+                     "fixtures", "empty.json")).read()
     invalid_json = open(
         os.path.join(os.path.dirname(__file__),
                      "fixtures", "invalid.json")).read()
-    complex_json = open(
+    tone_json = open(
         os.path.join(os.path.dirname(__file__),
-                     "fixtures", "complex_instrument.json")).read()
-    complex_orc = open(
+                     "fixtures", "20kHz_tone.json")).read()
+    tone_orc = open(
         os.path.join(os.path.dirname(__file__),
-                  "fixtures", "complex_instrument.orc")).read()
+                  "fixtures", "20kHz_tone.orc")).read()
     render_err_json = open(
         os.path.join(os.path.dirname(__file__),
                   "fixtures", "render_error.json")).read()
     render_err_orc = open(
         os.path.join(os.path.dirname(__file__),
                   "fixtures", "render_error.orc")).read()
-    more_complex_json = open(
+    complex_json = open(
       os.path.join(os.path.dirname(__file__),
-                   "fixtures", "even_more_complex.json")).read()
+                   "fixtures", "complex.json")).read()
 
 def test_create_empty():
     """Should create an empty instrument."""
@@ -38,7 +38,7 @@ def test_create_empty():
 def test_create_from_json():
     """Should create an instrument from JSON."""
     global valid_json
-    i = se.instrument.Instrument(simple_json)
+    i = se.instrument.Instrument(empty_json)
     assert type(i) == se.instrument.Instrument
 
 @nose.tools.raises(ValueError)
@@ -63,24 +63,24 @@ def test_create_rand_instr_params():
 
 def test_create_to_json():
     """The JSON we create is in valid JSON format"""
-    global simple_json
-    i = se.instrument.Instrument(simple_json)
+    global empty_json
+    i = se.instrument.Instrument(empty_json)
     assert '{"root": {}}' == i.to_json()
 
 def test_mutation():
     """The mutation produces something different from the original thing"""
-    global complex_json
-    i = se.instrument.Instrument(complex_json)
+    global tone_json
+    i = se.instrument.Instrument(tone_json)
     old_json = i.to_json()
     i.mutate()
     assert old_json != i.to_json
 
 def test_ficken():
     """The crossover of two instruments creates a new instrument not equal to either of the originals"""
-    global complex_json, more_complex_json
-    i = se.instrument.Instrument(more_complex_json)
-    j = se.instrument.Instrument(complex_json)
-    j1 = se.instrument.Instrument(complex_json)
+    global tone_json, complex_json
+    i = se.instrument.Instrument(complex_json)
+    j = se.instrument.Instrument(tone_json)
+    j1 = se.instrument.Instrument(tone_json)
     j.ficken(i)
     assert j1.to_json() != j.to_json()
     assert i.to_json() != j.to_json()
@@ -89,9 +89,9 @@ def test_ficken():
 
 def test_to_instr():
     """test if a simple instrument produces the valid csound code that we wrote by hand"""
-    global complex_json, complex_orc
-    i = se.instrument.Instrument(complex_json)
-    assert i.to_instr() == complex_orc
+    global tone_json, tone_orc
+    i = se.instrument.Instrument(tone_json)
+    assert i.to_instr() == tone_orc
 
 def test_population():
     """Should create a Population object containing a list of instruments with length == size"""

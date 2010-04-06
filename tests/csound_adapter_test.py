@@ -4,13 +4,13 @@ import nose.tools
 import sound_evolution as se
 
 def setUp():
-    global csd, aif_filename, complex_json
+    global csd, aif_filename, tone_json
     aif_filename = "/tmp/__test_out.aif"
-    complex_json = open(
+    tone_json = open(
         os.path.join(os.path.dirname(__file__),
-                     "fixtures", "complex_instrument.json")).read()
+                     "fixtures", "20kHz_tone.json")).read()
     csd = se.csound_adapter.CSD()
-    csd.orchestra(se.instrument.Instrument(complex_json))
+    csd.orchestra(se.instrument.Instrument(tone_json))
     csd.score('i 1 0 2')
 
 def test_play():
@@ -35,11 +35,11 @@ def test_render_aif():
 
 def test_clean_tmp_files():
     """Should clean up temp files."""
-    global aif_filename, complex_json
+    global aif_filename, tone_json
     # This test uses its own instance of CSD since other tests would
     # fail without the object.
     csd = se.csound_adapter.CSD()
-    csd.orchestra(se.instrument.Instrument(complex_json))
+    csd.orchestra(se.instrument.Instrument(tone_json))
     csd.score('i 1 0 2')
     csd.output_aif(aif_filename)
     csd_filename = csd.output_csd_filename

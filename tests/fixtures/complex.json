@@ -1,47 +1,45 @@
 {
-    "code": 
+    "code":
     {
         "name": "div",
          "symbol": "/",
          "intype": "x",
          "outtype": "a",
-         "params": 
+         "params":
         [
         ],
          "type": "math"
     },
-     "children": 
+     "children":
     [
         {
-            "code": 
+            "code":
             {
                 "outtype": "x",
                  "type": "const",
                  "name": "const",
                  "value": "87.0029244004"
             },
-             "children": 
+             "children":
             [
             ]
         },
-         
         {
-            "code": 
+            "code":
             {
                 "outtype": "x",
                  "type": "const",
                  "name": "const",
                  "value": "63.3559456138"
             },
-             "children": 
+             "children":
             [
             ]
         },
-         
         {
-            "code": 
+            "code":
             {
-                "params": 
+                "params":
                 [
                     {
                         "max": 1,
@@ -49,14 +47,12 @@
                          "name": "amp",
                          "min": 0
                     },
-                     
                     {
                         "max": 20000,
                          "type": "k",
                          "name": "freq",
                          "min": 20
                     },
-                     
                     {
                         "max": 1,
                          "type": "t",
@@ -69,66 +65,64 @@
                  "type": "code",
                  "name": "koscil"
             },
-             "children": 
+             "children":
             [
                 {
-                    "code": 
+                    "code":
                     {
                         "name": "sub",
                          "symbol": "-",
                          "intype": "k",
                          "outtype": "k",
-                         "params": 
+                         "params":
                         [
                         ],
                          "type": "math"
                     },
-                     "children": 
+                     "children":
                     [
                         {
-                            "code": 
+                            "code":
                             {
                                 "name": "div",
                                  "symbol": "/",
                                  "intype": "k",
                                  "outtype": "k",
-                                 "params": 
+                                 "params":
                                 [
                                 ],
                                  "type": "math"
                             },
-                             "children": 
+                             "children":
                             [
                                 {
-                                    "code": 
+                                    "code":
                                     {
                                         "outtype": "x",
                                          "type": "const",
                                          "name": "const",
                                          "value": "37.1460496255"
                                     },
-                                     "children": 
+                                     "children":
                                     [
                                     ]
                                 },
-                                 
                                 {
-                                    "code": 
+                                    "code":
                                     {
                                         "outtype": "x",
                                          "type": "const",
                                          "name": "const",
                                          "value": "0.69495450812"
                                     },
-                                     "children": 
+                                     "children":
                                     [
                                     ]
                                 },
-                                 
                                 {
-                                    "code": 
+                                    "code":
                                     {
-                                        "params": 
+                                        "params":
                                         [
                                             {
                                                 "max": 1,
@@ -142,85 +136,80 @@
                                          "type": "code",
                                          "name": "controlwhitenoise"
                                     },
-                                     "children": 
+                                     "children":
                                     [
                                         {
-                                            "code": 
+                                            "code":
                                             {
                                                 "outtype": "x",
                                                  "type": "const",
                                                  "name": "const",
                                                  "value": "0.539953758525"
                                             },
-                                             "children": 
+                                             "children":
                                             [
                                             ]
                                         }
                                     ]
                                 },
-                                 
                                 {
-                                    "code": 
+                                    "code":
                                     {
                                         "outtype": "x",
                                          "type": "const",
                                          "name": "const",
                                          "value": "70.7328910055"
                                     },
-                                     "children": 
+                                     "children":
                                     [
                                     ]
                                 }
                             ]
                         },
-                         
                         {
-                            "code": 
+                            "code":
                             {
                                 "outtype": "x",
                                  "type": "const",
                                  "name": "const",
                                  "value": "83.7957195999"
                             },
-                             "children": 
+                             "children":
                             [
                             ]
                         }
                     ]
                 },
-                 
                 {
-                    "code": 
+                    "code":
                     {
                         "outtype": "x",
                          "type": "const",
                          "name": "const",
                          "value": "11820.1639084"
                     },
-                     "children": 
+                     "children":
                     [
                     ]
                 },
-                 
                 {
-                    "code": 
+                    "code":
                     {
                         "outtype": "t",
                          "type": "const",
                          "name": "const",
                          "value": "1"
                     },
-                     "children": 
+                     "children":
                     [
                     ]
                 }
             ]
         },
-         
         {
-            "code": 
+            "code":
             {
-                "params": 
+                "params":
                 [
                     {
                         "max": 20000,
@@ -234,12 +223,12 @@
                  "type": "code",
                  "name": "aphasor"
             },
-             "children": 
+             "children":
             [
                 {
-                    "code": 
+                    "code":
                     {
-                        "params": 
+                        "params":
                         [
                             {
                                 "max": 1,
@@ -247,14 +236,12 @@
                                  "name": "amp",
                                  "min": 0
                             },
-                             
                             {
                                 "max": 20,
                                  "type": "k",
                                  "name": "freq",
                                  "min": 0
                             },
-                             
                             {
                                 "max": 5,
                                  "type": "t",
@@ -267,12 +254,12 @@
                          "type": "code",
                          "name": "lfo"
                     },
-                     "children": 
+                     "children":
                     [
                         {
-                            "code": 
+                            "code":
                             {
-                                "params": 
+                                "params":
                                 [
                                     {
                                         "max": 1,
@@ -286,45 +273,43 @@
                                  "type": "code",
                                  "name": "controlwhitenoise"
                             },
-                             "children": 
+                             "children":
                             [
                                 {
-                                    "code": 
+                                    "code":
                                     {
                                         "outtype": "x",
                                          "type": "const",
                                          "name": "const",
                                          "value": "0.621157975637"
                                     },
-                                     "children": 
+                                     "children":
                                     [
                                     ]
                                 }
                             ]
                         },
-                         
                         {
-                            "code": 
+                            "code":
                             {
                                 "outtype": "x",
                                  "type": "const",
                                  "name": "const",
                                  "value": "3.75444323997"
                             },
-                             "children": 
+                             "children":
                             [
                             ]
                         },
-                         
                         {
-                            "code": 
+                            "code":
                             {
                                 "outtype": "t",
                                  "type": "const",
                                  "name": "const",
                                  "value": "1"
                             },
-                             "children": 
+                             "children":
                             [
                             ]
                         }

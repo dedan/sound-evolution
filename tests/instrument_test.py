@@ -78,18 +78,14 @@ def test_mutation():
 
 def test_ficken():
     """The crossover of two instruments creates a new instrument not equal to either of the originals"""
-    # NOTE I commented out this text because sometimes the child is not
-    # different to one of the parents. But this can just happen if both
-    # parents are not very complex
-    
-    # global complex_json, more_complex_json
-    # i = se.instrument.Instrument(more_complex_json)
-    # j = se.instrument.Instrument(complex_json)
-    # j1 = se.instrument.Instrument(complex_json)
-    # j.ficken(i)
-    # assert (j1.to_json() != j.to_json()) & (i.to_json() != j.to_json()) 
-    # assert(type(j) == se.instrument.Instrument)
-    # assert(type(i) == se.instrument.Instrument)
+    global complex_json, more_complex_json
+    i = se.instrument.Instrument(more_complex_json)
+    j = se.instrument.Instrument(complex_json)
+    j1 = se.instrument.Instrument(complex_json)
+    j.ficken(i)
+    assert (j1.to_json() != j.to_json()) & (i.to_json() != j.to_json()) 
+    assert(type(j) == se.instrument.Instrument)
+    assert(type(i) == se.instrument.Instrument)
 
 def test_to_instr():
     """test if a simple instrument produces the valid csound code that we wrote by hand"""

@@ -15,6 +15,7 @@ class Instrument(object):
     __CONST_PROB = 0.7
     __MAX_CHILDREN = 4
     __OPCODES_FILE = "opcodes_extended.json"
+    __MAX_FICKEN = 10
 
     def __init__(self, instrument_tree=None):
         """ Create a new Instrument from a json string or from a tree of python objects """
@@ -232,13 +233,18 @@ class Instrument(object):
         flatself = Instrument.__traverse(self.instrument_tree)
         flatother = Instrument.__traverse(other.instrument_tree)
         candidates = []
-        while not candidates:
-            winner = random.randint(0,len(flatself)-1)
-            crosstype = flatself[winner]["code"]["outtype"]
-            candidates = [cand for cand in flatother if cand["code"]["outtype"] == crosstype]
-        winner2 = random.randint(0,len(candidates)-1)
-        flatself[winner]["code"] = candidates[winner2]["code"]
-        flatself[winner]["children"] = candidates[winner2]["children"]        
+        i = 0
+        while i < self.__class__.__MAX_FICKEN:
+            while not candidates:
+                winner = random.randint(0,len(flatself)-1)
+                crosstype = flatself[winner]["code"]["outtype"]
+                candidates = [cand for cand in flatother if cand["code"]["outtype"] == crosstype]
+            winner2 = random.randint(0,len(candidates)-1)
+            flatself[winner]["code"] = candidates[winner2]["code"]
+            flatself[winner]["children"] = candidates[winner2]["children"]     
+            if other.to_json() != self.to_json():
+                return
+        raise Exception("ficken was not successfull")   
 
     @staticmethod
     def __traverse(node):

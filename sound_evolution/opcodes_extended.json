@@ -197,6 +197,18 @@
     ]
   },
   {
+    "name": "buzz",
+    "type": "code",
+    "symbol": "buzz",
+    "outtype": "a",
+    "params": [
+      {"name": "amp", "type": "x", "min": 0, "max": 1},
+      {"name": "freq", "type": "x", "min": 20, "max": 20000},
+      {"name": "knh", "type": "k", "min": 1, "max": 500},
+      {"name": "function", "type": "t", "min": 0, "max": 1},
+    ]
+  },
+  {
     "name": "add",
     "type": "math",
     "symbol": "+",

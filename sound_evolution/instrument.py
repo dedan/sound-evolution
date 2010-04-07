@@ -16,18 +16,36 @@ class Instrument(object):
     __MAX_FICKEN = 10
 
     def __init__(self, instrument_tree=None):
-        """ Create a new Instrument from a json string or from a tree of python objects """
+        """Create a new Instrument
+        
+        The new Instrument can be created from a json string 
+        or from a tree of python objects (e.g. instrument_tree of another
+        instrument)
+        
+        """
         if type(instrument_tree) is str:
             self.instrument_tree = json.loads(instrument_tree)
         else:
             self.instrument_tree = instrument_tree
 
     def __eq__(self, other):
+        """equality comparison of two instruments
+        
+        comparison is done by comparing the json representation of 
+        two instrument objects
+        
+        """
         if isinstance(other, Instrument):
             return self.to_json() == other.to_json()
         return NotImplemented
-
+        
     def __ne__(self, other):
+        """not equal comparison of two instruments
+        
+        uses the eq operator and therefore also the json representation of
+        an instrument for comparison
+        
+        """
         r = self.__eq__(other)
         if r is NotImplemented:
             return r

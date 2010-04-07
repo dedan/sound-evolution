@@ -60,7 +60,21 @@ def test_create_rand_instr_params():
         const_prob=0.8, max_children=2)
     assert type(i) == se.instrument.Instrument
     assert i.instrument_tree != None
-
+    
+def test_random_no_math():
+    """a random instrument should not consist only of math
+    
+    operators and constants because this can be replaced by a single constant
+    
+    """
+    i = se.instrument.Instrument.random(const_prob=0.7, max_children=5)
+    flat = se.instrument.Instrument.traverse(i.instrument_tree)
+    only_math = True
+    for elem in flat:
+        if elem["code"]["type"] != "math":
+            only_math = False
+    assert(not only_math)
+    
 def test_create_to_json():
     """The JSON we create is in valid JSON format"""
     global empty_json

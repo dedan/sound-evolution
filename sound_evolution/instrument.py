@@ -177,74 +177,80 @@ class Instrument(object):
         # get list of available opcodes from json file_
         opcodes = json.loads(file(os.path.join(os.path.dirname(__file__), opcodes_file)).read())
 
-        # select random root element (with a output)
-        if root_type and root_type == "t":
-            # TODO this 1 here has to be changed to a randint when we have more
-            # than 1 table in the score
-            root = Instrument.__make_node(Instrument.__make_const_code("t", 1))
+        # this only_math avoids creation of constant instruments
+        only_math = True
+        while only_math:
+            # select random root element
+            if root_type and root_type == "t":
+                # TODO this 1 here has to be changed to a randint when we have more
+                # than 1 table in the score
+                root = Instrument.__make_node(Instrument.__make_const_code("t", 1))
+                inst = Instrument(root)
+                return inst
+            elif root_type:
+                filtered = get_only_type(root_type, opcodes)
+            else:
+                filtered = get_only_not_type("k", opcodes)
+            root = Instrument.__make_node(random.choice(filtered))
+            todo = deque([root])
+            if root["code"]["type"] != "math":
+                only_math = False
+
+            # TODO this number has to be replaced by the max value of the opcode with
+            # which it is used
+            max_rand_const = 100
+
+            while todo:
+                tmp_tree = todo.popleft()
+
+                # if it is a math operator
+                if tmp_tree["code"]["type"] == "math":
+
+                    n_children = random.randint(2, max_children)
+                    for i in range(n_children):
+                        if random.random() > const_prob:
+                            filtered = get_only_type(tmp_tree["code"]["intype"], opcodes)
+                            filtered = [f for f in filtered if f["type"] == "code"]
+                            random_node = Instrument.__make_node(random.choice(filtered))
+                            todo.append(random_node)
+                        else:
+                            const_code = Instrument.__make_const_code("x", random.random() * max_rand_const)
+                            random_node = Instrument.__make_node(const_code)
+
+                        tmp_tree["children"].append(random_node)
+
+                # if it is an opcode
+                else:
+                    for param in tmp_tree["code"]["params"]:
+
+                        # if param type is t alwys plug in a constant
+                        if param["type"] == "t":
+                            if param["max"] == param["min"]:
+                                random_const = param["max"]
+                            else:
+                                random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
+                            const_code = Instrument.__make_const_code("t", random_const)
+                            random_node = Instrument.__make_node(const_code)
+
+                        # if it is below constant probability also plug in constant
+                        elif param["type"] != "a" and random.random() < const_prob:
+                            # choose random constant according to input range and type
+                            random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
+                            const_code = Instrument.__make_const_code("x", random_const)
+                            random_node = Instrument.__make_node(const_code)
+
+                        # when above the constant probability plug in another opcode
+                        else:
+                            only_math = False
+                            filtered = get_only_type(param["type"], opcodes)
+                            randop = random.choice(filtered)
+                            random_node = Instrument.__make_node(randop)
+                            todo.append(random_node)
+
+                        tmp_tree["children"].append(random_node)
+
             inst = Instrument(root)
             return inst
-        elif root_type:
-            filtered = get_only_type(root_type, opcodes)
-        else:
-            filtered = get_only_not_type("k", opcodes)
-        root = Instrument.__make_node(random.choice(filtered))
-        todo = deque([root])
-
-        # TODO this number has to be replaced by the max value of the opcode with
-        # which it is used
-        max_rand_const = 100
-
-        while todo:
-            tmp_tree = todo.popleft()
-
-            # if it is a math operator
-            if tmp_tree["code"]["type"] == "math":
-
-                n_children = random.randint(2, max_children)
-                for i in range(n_children):
-                    if random.random() > const_prob:
-                        filtered = get_only_type(tmp_tree["code"]["intype"], opcodes)
-                        filtered = [f for f in filtered if f["type"] == "code"]
-                        random_node = Instrument.__make_node(random.choice(filtered))
-                        todo.append(random_node)
-                    else:
-                        const_code = Instrument.__make_const_code("x", random.random() * max_rand_const)
-                        random_node = Instrument.__make_node(const_code)
-
-                    tmp_tree["children"].append(random_node)
-
-            # if it is an opcode
-            else:
-                for param in tmp_tree["code"]["params"]:
-
-                    # if param type is t alwys plug in a constant
-                    if param["type"] == "t":
-                        if param["max"] == param["min"]:
-                            random_const = param["max"]
-                        else:
-                            random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
-                        const_code = Instrument.__make_const_code("t", random_const)
-                        random_node = Instrument.__make_node(const_code)
-
-                    # if it is below constant probability also plug in constant
-                    elif param["type"] != "a" and random.random() < const_prob:
-                        # choose random constant according to input range and type
-                        random_const = (random.random() * (param["max"]-param["min"])) + param["min"]
-                        const_code = Instrument.__make_const_code("x", random_const)
-                        random_node = Instrument.__make_node(const_code)
-
-                    # when above the constant probability plug in another opcode
-                    else:
-                        filtered = get_only_type(param["type"], opcodes)
-                        randop = random.choice(filtered)
-                        random_node = Instrument.__make_node(randop)
-                        todo.append(random_node)
-
-                    tmp_tree["children"].append(random_node)
-
-        inst = Instrument(root)
-        return inst
 
     def mutate(self):
         """Mutate an instrument.
@@ -255,7 +261,7 @@ class Instrument(object):
 
         """
         mutant = copy.deepcopy(self)
-        flat = Instrument.__traverse(mutant.instrument_tree)
+        flat = Instrument.traverse(mutant.instrument_tree)
         winner = random.randint(0, len(flat) - 1)
         random_tree = Instrument.random(
             root_type = flat[winner]["code"]["outtype"]).instrument_tree
@@ -267,8 +273,8 @@ class Instrument(object):
         """Cross a tree-instrument with another one."""
         a = copy.deepcopy(self)
         b = copy.deepcopy(other)
-        flata = Instrument.__traverse(a.instrument_tree)
-        flatb = Instrument.__traverse(b.instrument_tree)
+        flata = Instrument.traverse(a.instrument_tree)
+        flatb = Instrument.traverse(b.instrument_tree)
         candidates = []
         i = 0
         while i < Instrument.__MAX_FICKEN:
@@ -285,13 +291,13 @@ class Instrument(object):
         raise Exception("ficken was not successfull")
 
     @staticmethod
-    def __traverse(node):
+    def traverse(node):
         flat = []
         for child in node["children"]:
             if child["code"]["type"] == "const":
                 flat.append(child)
             else:
-                flat.extend(Instrument.__traverse(child))
+                flat.extend(Instrument.traverse(child))
         flat.append(node)
         return flat
 

@@ -241,16 +241,17 @@ class Instrument(object):
 
                         # when above the constant probability plug in another opcode
                         else:
-                            only_math = False
                             filtered = get_only_type(param["type"], opcodes)
                             randop = random.choice(filtered)
+                            if randop["type"] != "math":
+                                only_math = False
                             random_node = Instrument.__make_node(randop)
                             todo.append(random_node)
 
                         tmp_tree["children"].append(random_node)
 
-            inst = Instrument(root)
-            return inst
+        inst = Instrument(root)
+        return inst
 
     def mutate(self):
         """Mutate an instrument.

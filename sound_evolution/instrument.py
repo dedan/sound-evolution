@@ -7,7 +7,8 @@ import random
 from collections import deque
 import csound_adapter
 from gvgen import *
-from genetics import Individual
+from genetics import Individual 
+from genetics import Population
 
 class Instrument(object):
     """A class representing the genome tree."""
@@ -22,6 +23,7 @@ class Instrument(object):
             self.instrument_tree = json.loads(instrument_tree)
         else:
             self.instrument_tree = instrument_tree
+        self.Fitness = random.randint(0,20)
 
     def to_instr(self):
         """Generate csound ocr code."""
@@ -227,7 +229,7 @@ class Instrument(object):
 
     def ficken(self, other):
         """Cross a tree-instrument with another one."""
-        flatself = Instrument.__traverse(self.instrument_tree)
+        flatself = Instrument.__a.m(self.instrument_tree)
         flatother = Instrument.__traverse(other.instrument_tree)
         candidates = []
         while not candidates:
@@ -251,7 +253,7 @@ class Instrument(object):
         
     def fitness(self):
         """Score of the instrument."""
-        return
+        return self.Fitness 
 
 
     @staticmethod
@@ -278,4 +280,8 @@ if __name__ == '__main__':
     csd.play()
     print i.to_json()
     print i.to_instr()
+    
+
+    
+    
     

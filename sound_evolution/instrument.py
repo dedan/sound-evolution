@@ -23,7 +23,8 @@ class Instrument(object):
             self.instrument_tree = json.loads(instrument_tree)
         else:
             self.instrument_tree = instrument_tree
-        self.Fitness = random.randint(0,20)
+       
+ 
 
     def to_instr(self):
         """Generate csound ocr code."""
@@ -253,7 +254,7 @@ class Instrument(object):
         
     def fitness(self):
         """Score of the instrument."""
-        return self.Fitness 
+        return random.randint(0,20) 
 
 
     @staticmethod

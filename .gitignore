@@ -21,3 +21,5 @@ ThumbsDB
 *.tmproj
 *.coverage
 default.csd
+sound_evolution/test.dot
+sound_evolution/test.jpg

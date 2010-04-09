@@ -3,7 +3,8 @@ audio files and play in real-time.
 
 """
 
-import string, os, sys
+import subprocess as sp
+import string, sys, os
 
 class CSD(object):
     """This class represents a csd file for csound."""
@@ -12,6 +13,14 @@ class CSD(object):
         self.__instruments = []
         self.__note_list = ''
         self.output_csd_filename = 'default.csd'
+        self.output_filename = None
+        self.csound_binary = 'csound'
+        self.last_run_output = None
+
+    def __del__(self):
+        for f in (self.output_csd_filename, self.output_filename):
+            if not f is None and os.path.exists(f):
+                os.unlink(f)
 
     def orchestra(self, *args):
         self.__instruments += args
@@ -45,15 +54,15 @@ class CSD(object):
         if output == "soundcard":
             self.__options = '-+rtaudio=portaudio -iadc -odac --env:CSNOSTOP=yes -d'
         elif output == "aif":
-            output_filename = ""
+            self.output_filename = ""
             if "output_filename" in keywords:
-                output_filename = keywords['output_filename']
+                self.output_filename = keywords['output_filename']
             else:
                 if self.output_csd_filename.endswith('.csd'):
-                    output_filename = self.output_csd_filename[:-4] + '.aif'
+                    self.output_filename = self.output_csd_filename[:-4] + '.aif'
                 else:
-                    output_filename = self.output_csd_filename + '.aif'
-            self.__options = '-A -d -o ' + output_filename
+                    self.output_filename = self.output_csd_filename + '.aif'
+            self.__options = '-A -d -o ' + self.output_filename
         else:
             raise ValueError("Argument 'output' must be either 'soundcard' or 'aif'")
         fp = open(self.output_csd_filename, 'w')
@@ -64,7 +73,11 @@ class CSD(object):
                 self.tagify('CsInstruments', self.orchestra_definition()) +
                 self.tagify('CsScore', self.score_definition()), 0))
         fp.close()
-        os.system('csound %s' % (self.output_csd_filename))
+        args = [self.csound_binary, self.output_csd_filename]
+        p = sp.Popen(args, stdout=sp.PIPE, stderr=sp.PIPE)
+        (stdout, self.last_run_output) = p.communicate()
+        if p.returncode != 0:
+            raise OSError("Csound execution failed!")
 
     def play(self):
         """Play a csd object to an audio device using csound."""

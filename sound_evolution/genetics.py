@@ -52,13 +52,13 @@ class Population(object):
     def find_fittest(self, no_fit):
         """find a collection of the fittest individuals of size equal to or more than no_fit"""
         ranked = self.individuals
-        ranked.sort(cmp = lambda x,y: cmp(x.fitness(), y.fitness()), reverse=True)
+        ranked.sort(cmp = lambda x,y: cmp(x.Fitness, y.Fitness), reverse=True)
         a = ranked[no_fit-1]
-        lowest_fitness = a.fitness()
+        lowest_fitness = a.Fitness
         chosen = []
-        ratings = [x.fitness() for x in ranked]
+        ratings = [x.Fitness for x in ranked]
         for i in self.individuals:
-            if i.Fitness >= lowest_fitness:
+            if i.fitness() >= lowest_fitness:
                 chosen.append(i)
             else:
                 pass
@@ -66,12 +66,12 @@ class Population(object):
         
                 
     def natural_selection(self, no_surviving=None, percentage=None):
-        """filter out the least fit individuals in the population - percentage optional argument between 0 and 100; no_surviving optional 
+        """filter out the least fit individuals in the population - <percentage> optional argument between 0 and 100; <no_surviving> optional 
             argument denoting desired no_ of surviving individuals"""
         if no_surviving:
             self.individuals = self.find_fittest(no_surviving)
         if percentage:
-            number = int(((100 -percentage)/100.0)*len(self.individuals))
+            number = int((percentage/100.0)*len(self.individuals))
             self.individuals = self.find_fittest(number)
         else:
             pass

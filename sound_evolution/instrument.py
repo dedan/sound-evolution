@@ -28,6 +28,7 @@ class Instrument(object):
             self.instrument_tree = json.loads(instrument_tree)
         else:
             self.instrument_tree = instrument_tree
+        self.Fitness = random.randint(0,20)
        
  
 
@@ -307,7 +308,7 @@ class Instrument(object):
 
     def fitness(self):
         """Score of the instrument."""
-        return random.randint(0,20) 
+        return self.Fitness
 
     @staticmethod
     def __make_node(code):
@@ -330,11 +331,7 @@ if __name__ == '__main__':
     csd.play()
     print i.to_json()
     print i.to_instr()
-<<<<<<< HEAD
-    
-
-    
-    
-    
-=======
->>>>>>> 82436e2ca96aa225886fa02364cf345fb35f1137
+    P = Population(10,Instrument, {'const_prob':0.7, 'max_children':4})
+    print len(P.individuals)
+    P.natural_selection(percentage=20)
+    print len(P.individuals)

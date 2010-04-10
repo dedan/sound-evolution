@@ -43,11 +43,11 @@ class Population(object):
         mutations = rd.sample(self.individuals, int(self.size*frac_mutate))
         for i in mutations:
             x = i.mutate()
-            self.individuals = self.individuals.append(x)
+            self.individuals.append(x)
         breeders = rd.sample(self.individuals, 2*int(self.size*half_frac_breed))
         for i in range(len(breeders)-1):
             x = breeders[i].ficken(breeders[i+1])    #or something similar:- there are many mating schemes as we know living in the 21st century
-            self.individuals = self.individuals.append(x)
+            self.individuals.append(x)
                
     def find_fittest(self, no_fit):
         """find a collection of the fittest individuals of size equal to or more than no_fit"""

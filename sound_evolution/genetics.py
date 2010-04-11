@@ -44,10 +44,13 @@ class Population(object):
         for i in mutations:
             x = i.mutate()
             self.individuals.append(x)
+            self.size = len(self.individuals)
         breeders = rd.sample(self.individuals, 2*int(self.size*half_frac_breed))
         for i in range(len(breeders)-1):
             x = breeders[i].ficken(breeders[i+1])    #or something similar:- there are many mating schemes as we know living in the 21st century
             self.individuals.append(x)
+            self.size = len(self.individuals)
+
                
     def find_fittest(self, no_fit):
         """find a collection of the fittest individuals of size equal to or more than no_fit"""
@@ -70,9 +73,11 @@ class Population(object):
             argument denoting desired no_ of surviving individuals"""
         if no_surviving:
             self.individuals = self.find_fittest(no_surviving)
+            self.size = len(self.individuals)
         if percentage:
             number = int((percentage/100.0)*len(self.individuals))
             self.individuals = self.find_fittest(number)
+            self.size = len(self.individuals)
         else:
             pass
         

@@ -75,6 +75,6 @@ def test_next_generation():
     size = 3
     params = {"const_prob": 0.7, "max_children": 4}
     pop = se.genetics.Population(size, se.instrument.Instrument, params)
-    pop_2 = pop.next_generation(1, 0.5)
-    assert type(pop_2) == se.genetics.Population
+    pop.next_generation(0.0, 0.0)
+    assert type(pop) == se.genetics.Population
 

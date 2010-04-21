@@ -20,7 +20,7 @@ def test_mutate():
              try:
                  csd = se.csound_adapter.CSD()
                  csd.orchestra(i)
-                 csd.score('i 1 0 2')
+                 csd.score('i 1 0 0')
                  csd.play()
                  print i.to_json()
                  print i.to_instr()
@@ -45,7 +45,7 @@ def test_ficken():
              try:
                  csd = se.csound_adapter.CSD()
                  csd.orchestra(i)
-                 csd.score('i 1 0 2')
+                 csd.score('i 1 0 0')
                  csd.play()
                  print i.to_json()
                  print i.to_instr()

@@ -41,7 +41,10 @@ class Instrument_tree_iterator:
     
     def get_random_descendant(self):
         flat = Instrument_tree_iterator.get_iterator_list(self.node)
-        return random.choice(flat)
+        chosen = None
+        while (not chosen) or chosen.get_valid_replacement_type() == "i":
+            chosen = random.choice(flat)
+        return chosen
     
     @staticmethod
     def get_iterator_list(node):

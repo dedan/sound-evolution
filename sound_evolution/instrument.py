@@ -32,7 +32,7 @@ class Instrument_tree_iterator:
     
     def get_valid_replacement_type(self):
         if not self.parent:
-            return "a"                            #returns x
+            return "a"                            
         elif self.parent.node["code"]["params"]:
             assert len(self.parent.node["code"]["params"]) == len(self.parent.node["children"])
             return self.parent.node["code"]["params"][self.child_pos]["type"]

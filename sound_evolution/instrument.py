@@ -324,6 +324,7 @@ class Instrument(object):
         candidates = []
         i = 0
         while i < Instrument.__MAX_FICKEN:
+            i += 1
             while not candidates:
                 it = Instrument_tree_iterator(a.instrument_tree)
                 us = Instrument_tree_iterator(other.instrument_tree)
@@ -334,8 +335,9 @@ class Instrument(object):
             winner2 = candidates[choice]
             winner.node["code"] = winner2.node["code"]
             winner.node["children"] = winner2.node["children"]
-            return a
-       
+            if (a.to_json() != self.to_json()) and (a.to_json() != other.to_json()):
+                return a
+        raise Exception("ficken was not successfull")       
 
     @staticmethod
     def traverse(node):

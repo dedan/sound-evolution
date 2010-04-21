@@ -25,28 +25,34 @@ def setUp():
 def test_mutate():
     """csound shouldn't crash after imposing numerous mutations"""
     errors = 0
-    P = Mutate_Population    
-    for b in range(No_Iterations): 
+    P = Mutate_Population
+    for b in range(No_Iterations):
          for i in P.individuals:
              try:
                  csd = se.csound_adapter.CSD()
                  csd.orchestra(i)
                  csd.score('i 1 0 0')
-                 csd.play()
-                 print i.to_json()
-                 print i.to_instr()
+                 csd.output_aif()
              except OSError:
                  print 'skipping this iteration:- Csound crashed'
-                 errors = errors + 1
-         choice = random.randint(0,3)    
-         P.individuals[choice].Fitness = 1
+                 errors += 1
+         choice = random.choice(P.individuals)    
+         choice.Fitness = 1
          P.natural_selection(no_surviving=1) 
          P.next_generation(1.0, 0.0)
          P.next_generation(1.0, 0.0)
          for i in P.individuals:
              i.Fitness = 0
     assert errors == 0
-    
+
+def test_one_breeding():
+    """a population of size two should have size three after
+        breeding 50 percent of them
+    """
+    P = Ficken_Population
+    P.next_generation(0.0, 0.5)
+    assert len(P.individuals) == 3
+
 def test_ficken():
     """multiple fickens are sucessful"""
     errors = 0

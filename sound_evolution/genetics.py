@@ -35,7 +35,11 @@ class Population(object):
         
     def __kill(self, index):
         """kill index'th element off from the population"""
-        del self.individuals[index] 
+        del self.individuals[index]
+    
+    def append_individual(self, individ):
+        self.individuals.append(individ)
+        self.size += 1
 
     def next_generation(self, frac_mutate, half_frac_breed):
         """Create the next generation from the current population.
@@ -69,12 +73,8 @@ class Population(object):
         
                 
     def natural_selection(self, no_surviving=None, percentage=None):
-        """filter out the least fit individuals in the population
-        
-            <percentage> optional argument between 0 and 100; 
-            <no_surviving> optional 
-            argument denoting desired no_ of surviving individuals
-        """
+        """filter out the least fit individuals in the population - <percentage> optional argument between 0 and 100; <no_surviving> optional 
+            argument denoting desired no_ of surviving individuals"""
         if no_surviving:
             self.individuals = self.find_fittest(no_surviving)
             self.size = len(self.individuals)

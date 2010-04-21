@@ -330,9 +330,9 @@ class Instrument(object):
                 us = Instrument_tree_iterator(other.instrument_tree)
                 winner = it.get_random_descendant()
                 crosstype = winner.get_valid_replacement_type()
-                candidates = [cand for cand in Instrument_tree_iterator.get_iterator_list(us.node) if cand.get_valid_replacement_type() == crosstype]
-            choice = random.randint(0, len(candidates) - 1)
-            winner2 = candidates[choice]
+                candidates = [cand for cand in Instrument_tree_iterator.get_iterator_list(us.node) \
+                    if cand.node["code"]["outtype"] == crosstype]
+            winner2 = random.choice(candidates)
             winner.node["code"] = winner2.node["code"]
             winner.node["children"] = winner2.node["children"]
             if (a.to_json() != self.to_json()) and (a.to_json() != other.to_json()):

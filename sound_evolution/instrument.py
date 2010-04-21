@@ -68,10 +68,7 @@ class Instrument(object):
         
         """
         if type(instrument_tree) is str:
-            # This functionalality has been removed and put in seperate function
-            # load_from_json.  I can't find any instances of passing a string to
-            # the constructor in the codebase though.
-            assert false
+            self.instrument_tree = json.loads(instrument_tree)        
         else:
             self.instrument_tree = instrument_tree
         self.Fitness = 0

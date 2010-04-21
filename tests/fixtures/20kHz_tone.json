@@ -3,7 +3,8 @@
     "type": "math",
     "symbol": "+",
     "outtype": "a",
-    "intype": "x"
+    "intype": "x",
+    "params": []
   },
   "children" : [
     {

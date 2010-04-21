@@ -39,7 +39,7 @@ class Population(object):
     
     def append_individual(self, individ):
         self.individuals.append(individ)
-        self.size += 1
+        self.size = len(self.individuals)
 
     def next_generation(self, frac_mutate, half_frac_breed):
         """Create the next generation from the current population.

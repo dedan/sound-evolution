@@ -17,8 +17,8 @@ def setUp():
                    "fixtures", "complex.json")).read()
     pa = se.instrument.Instrument(complex_json)
     ma = se.instrument.Instrument(tone_json)
-    Ficken_Population.individuals.append(pa)
-    Ficken_Population.individuals.append(ma)
+    Ficken_Population.append_individual(pa)
+    Ficken_Population.append_individual(ma)
     No_Iterations = 10
 
     
@@ -51,7 +51,7 @@ def test_one_breeding():
     """
     P = Ficken_Population
     P.next_generation(0.0, 0.5)
-    assert len(P.individuals) == 3
+    assert P.size == 3
 
 def test_ficken():
     """multiple fickens are sucessful"""

@@ -2,12 +2,23 @@
 
 import sound_evolution as se
 import random
+import os
 
 
 def setUp():
     global Mutate_Population, Ficken_Population, No_Iterations
     Mutate_Population = se.genetics.Population(4, se.instrument.Instrument, {'const_prob':0.7, 'max_children':3})
-    Ficken_Population = se.genetics.Population(3, se.instrument.Instrument, {'const_prob':0.7, 'max_children':3})
+    Ficken_Population = se.genetics.Population(0, se.instrument.Instrument, {'const_prob':0.7, 'max_children':3})
+    tone_json = open(
+        os.path.join(os.path.dirname(__file__),
+                     "fixtures", "20kHz_tone.json")).read()
+    complex_json = open(
+      os.path.join(os.path.dirname(__file__),
+                   "fixtures", "complex.json")).read()
+    pa = se.instrument.Instrument(complex_json)
+    ma = se.instrument.Instrument(tone_json)
+    Ficken_Population.individuals.append(pa)
+    Ficken_Population.individuals.append(ma)
     No_Iterations = 10
 
     
@@ -40,6 +51,7 @@ def test_ficken():
     """multiple fickens are sucessful"""
     errors = 0
     P = Ficken_Population
+    P.next_generation(0.0, 0.5)
     for b in range(No_Iterations): 
         for i in P.individuals:
              try:
@@ -47,7 +59,6 @@ def test_ficken():
                  csd.orchestra(i)
                  csd.score('i 1 0 0')
                  csd.play()
-                 print i.to_json()
                  print i.to_instr()
              except OSError:
                  print 'skipping this iteration:- Csound crashed'
@@ -59,7 +70,7 @@ def test_ficken():
         except IndexError:
             print 'no. of individuals isn\'t 3'
         P.natural_selection(no_surviving=2) 
-        P.next_generation(0.0, 0.5)
+        P.next_generation(0.0, 0.5)            
         for i in P.individuals:
             i.Fitness = 0
     assert errors == 0

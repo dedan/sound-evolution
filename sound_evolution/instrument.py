@@ -8,6 +8,50 @@ from gvgen import *
 from genetics import Individual 
 from genetics import Population
 
+class Instrument_tree_iterator:
+    def __init__(self, instrument_tree, parent=None, child_pos=0):
+        self.node = instrument_tree
+        self.parent = parent
+        self.child_pos = child_pos
+    
+    def get_next(self):
+        if self.node["children"]:
+            return Instrument_tree_iterator(self.node["children"][0], self, 0)
+        elif self.parent:
+            return self.parent.get_next_child(self.child_pos)
+        else:
+            return None
+
+    def get_next_child(self, child_pos):
+        if child_pos+1 < len(self.node["children"]):
+        	return Instrument_tree_iterator(self.node["children"][child_pos+1], self, child_pos+1)
+        elif self.parent:
+            return self.parent.get_next_child(self.child_pos)
+        else:
+            return None
+    
+    def get_valid_replacement_type(self):
+        if not self.parent:
+            return "a"                            #returns x
+        elif self.parent.node["code"]["params"]:
+            assert len(self.parent.node["code"]["params"]) == len(self.parent.node["children"])
+            return self.parent.node["code"]["params"][self.child_pos]["type"]
+        else:
+            return self.parent.node["code"]["intype"]
+    
+    def get_random_descendant(self):
+        flat = Instrument_tree_iterator.get_iterator_list(self.node)
+        return flat[random.randint(0, len(flat) - 1)]
+    
+    @staticmethod
+    def get_iterator_list(node):
+        flat = []
+        current = Instrument_tree_iterator(node, None, 0)
+        while current:
+            flat.append(current)
+            current = current.get_next()
+        return flat
+
 class Instrument(object):
     """A class representing the genome tree."""
 
@@ -19,18 +63,22 @@ class Instrument(object):
     def __init__(self, instrument_tree=None):
         """Create a new Instrument
         
-        The new Instrument can be created from a json string 
-        or from a tree of python objects (e.g. instrument_tree of another
-        instrument)
+        The new Instrument can be created a tree of python objects
+        (e.g. instrument_tree of another instrument)
         
         """
         if type(instrument_tree) is str:
-            self.instrument_tree = json.loads(instrument_tree)
+            # This functionalality has been removed and put in seperate function
+            # load_from_json.  I can't find any instances of passing a string to
+            # the constructor in the codebase though.
+            assert false
         else:
             self.instrument_tree = instrument_tree
         self.Fitness = 0
-       
- 
+    
+    def load_from_json(self, filename):
+        """ Load the instrument tree from the given JSON file """
+        self.instrument_tree = json.loads(instrument_tree)
 
     def __eq__(self, other):
         """equality comparison of two instruments
@@ -266,34 +314,31 @@ class Instrument(object):
 
         """
         mutant = copy.deepcopy(self)
-        flat = Instrument.traverse(mutant.instrument_tree)
-        winner = random.randint(0, len(flat) - 1)
-        random_tree = Instrument.random(
-            root_type = flat[winner]["code"]["outtype"]).instrument_tree
-        flat[winner]["code"] = random_tree["code"]
-        flat[winner]["children"] = random_tree["children"]
+        it = Instrument_tree_iterator(mutant.instrument_tree)
+        winner = it.get_random_descendant()
+        random_tree = Instrument.random(root_type=winner.get_valid_replacement_type()).instrument_tree
+        winner.node["code"] = random_tree["code"]
+        winner.node["children"] = random_tree["children"]
         return mutant
 
     def ficken(self, other):
         """Cross a tree-instrument with another one."""
         a = copy.deepcopy(self)
-        b = copy.deepcopy(other)
-        flata = Instrument.traverse(a.instrument_tree)
-        flatb = Instrument.traverse(b.instrument_tree)
         candidates = []
         i = 0
         while i < Instrument.__MAX_FICKEN:
             while not candidates:
-                winner = random.randint(0, len(flata) - 1)
-                crosstype = flata[winner]["code"]["outtype"]
-                candidates = [cand for cand in flatb \
-                                  if cand["code"]["outtype"] == crosstype]
-            winner2 = random.randint(0, len(candidates) - 1)
-            flata[winner]["code"] = candidates[winner2]["code"]
-            flata[winner]["children"] = candidates[winner2]["children"]
-            if a.to_json() != b.to_json():
-                return a
-        raise Exception("ficken was not successfull")
+                it = Instrument_tree_iterator(a.instrument_tree)
+                us = Instrument_tree_iterator(other.instrument_tree)
+                winner = it.get_random_descendant()
+                crosstype = winner.get_valid_replacement_type()
+                candidates = [cand for cand in Instrument_tree_iterator.get_iterator_list(us.node) if cand.get_valid_replacement_type() == crosstype]
+            choice = random.randint(0, len(candidates) - 1)
+            winner2 = candidates[choice]
+            winner.node["code"] = winner2.node["code"]
+            winner.node["children"] = winner2.node["children"]
+            return a
+       
 
     @staticmethod
     def traverse(node):

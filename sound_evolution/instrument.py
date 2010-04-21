@@ -14,25 +14,25 @@ class Instrument_tree_iterator:
         self.parent = parent
         self.child_pos = child_pos
     
-    def get_next(self):
+    def __get_next(self):
         if self.node["children"]:
             return Instrument_tree_iterator(self.node["children"][0], self, 0)
         elif self.parent:
-            return self.parent.get_next_child(self.child_pos)
+            return self.parent.__get_next_child(self.child_pos)
         else:
             return None
 
-    def get_next_child(self, child_pos):
+    def __get_next_child(self, child_pos):
         if child_pos+1 < len(self.node["children"]):
         	return Instrument_tree_iterator(self.node["children"][child_pos+1], self, child_pos+1)
         elif self.parent:
-            return self.parent.get_next_child(self.child_pos)
+            return self.parent.__get_next_child(self.child_pos)
         else:
             return None
     
     def get_valid_replacement_type(self):
         if not self.parent:
-            return "a"                            
+            return "a"
         elif self.parent.node["code"]["params"]:
             assert len(self.parent.node["code"]["params"]) == len(self.parent.node["children"])
             return self.parent.node["code"]["params"][self.child_pos]["type"]
@@ -41,7 +41,7 @@ class Instrument_tree_iterator:
     
     def get_random_descendant(self):
         flat = Instrument_tree_iterator.get_iterator_list(self.node)
-        return flat[random.randint(0, len(flat) - 1)]
+        return random.choice(flat)
     
     @staticmethod
     def get_iterator_list(node):
@@ -49,7 +49,7 @@ class Instrument_tree_iterator:
         current = Instrument_tree_iterator(node, None, 0)
         while current:
             flat.append(current)
-            current = current.get_next()
+            current = current.__get_next()
         return flat
 
 class Instrument(object):

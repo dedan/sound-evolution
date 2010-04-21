@@ -47,13 +47,12 @@ class Population(object):
         mutations = rd.sample(self.individuals, int(self.size*frac_mutate))
         for i in mutations:
             x = i.mutate()
-            self.individuals.append(x)
-            self.size = len(self.individuals)
+            self.append_individual(x)
         breeders = rd.sample(self.individuals, 2*int(self.size*half_frac_breed))
         for i in range(len(breeders)-1):
             x = breeders[i].ficken(breeders[i+1])    #or something similar:- there are many mating schemes as we know living in the 21st century
-            self.individuals.append(x)
-            self.size = len(self.individuals)
+            self.append_individual(x)
+      
 
                
     def find_fittest(self, no_fit):
@@ -72,15 +71,11 @@ class Population(object):
         return chosen
         
                 
-    def natural_selection(self, no_surviving=None, percentage=None):
+    def natural_selection(self, no_surviving=None):
         """filter out the least fit individuals in the population - <percentage> optional argument between 0 and 100; <no_surviving> optional 
             argument denoting desired no_ of surviving individuals"""
         if no_surviving:
             self.individuals = self.find_fittest(no_surviving)
-            self.size = len(self.individuals)
-        if percentage:
-            number = int((percentage/100.0)*len(self.individuals))
-            self.individuals = self.find_fittest(number)
             self.size = len(self.individuals)
         else:
             pass

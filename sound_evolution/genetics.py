@@ -36,6 +36,7 @@ class Population(object):
     def __kill(self, index):
         """kill index'th element off from the population"""
         del self.individuals[index]
+        self.size = self.size - 1
     
     def append_individual(self, individ):
         self.individuals.append(individ)

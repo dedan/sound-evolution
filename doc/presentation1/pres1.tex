@@ -76,6 +76,9 @@ keywordstyle=\color{keywordcolor},
 	\end{itemize}
 \end{frame}
 
+% \item<4-> Random element may produces ingenious/ unexpected results
+
+
 \begin{frame}
 	\frametitle{inspiration}
 	\framesubtitle{GE in art}
@@ -105,14 +108,24 @@ keywordstyle=\color{keywordcolor},
 \label{sg:sec:the_idea}
 
 \begin{frame}
-	\frametitle{The idea}
-	\framesubtitle{a human fitness function}
+	\frametitle{Problems}
+	\framesubtitle{Technical problems}
+	
 	\begin{itemize}
-		\item<1-> User updates Fitnesses by preference - Internet Interface
-		\item<2-> Large exposure/ evolution period required to produce interesting results.
-     	\item<3-> Is an aesthetic result possible - even over time?
-        \item<4-> Random element may produces ingenious/ unexpected results
-        \item<5-> Failure of aesthetic aspect may stimulate search for elemental parameters.
+		\item<1-> No objective measurement of aesthetics
+		\item<2-> Huge search space
+		\item<3-> Slow iterations
+		\item<4-> Is an aesthetic result possible - even over time?
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{The idea}
+	\framesubtitle{A human fitness function}
+	\begin{itemize}
+		\item<1-> Web interface where people rate the fitness of individuals
+		\item<2-> Loads of people needed
 	\end{itemize}
 	
 \end{frame}
@@ -121,31 +134,39 @@ keywordstyle=\color{keywordcolor},
 
 
 \section{The genome} % (fold)
-\begin{frame}
-	\frametitle{Tree Structure}
-	\framesubtitle{Csound}
-	\begin{itemize}
-	\item<1-> CSound instruments are Trees.
-	\item<3-> Plug in opcodes.
-	\item<4-> Dictionary Trees in Python
-	\item<5-> Tree search algorithms.	
-\end{itemize}
-
-	
-\end{frame}
-
-\begin{frame}
-	\frametitle{Creating/ Changing/ Evolving Sounds}
-	\begin{itemize}
-	\item<1-> Random sounds = random trees
-	\item<2-> Altering branches - Partially affects sounds
-	\item<3-> Mutation:- replace branch by random tree.
-	\item<4-> Crossover:- replace branch by branch of other tree.		
-\end{itemize}
-
-\end{frame}
-
 \label{sg:sec:the_genome}
+
+\begin{frame}
+	\frametitle{The Genome}
+	\framesubtitle{Tree structure}
+	\begin{itemize}
+		\item<1-> Genome often represented as tree
+		\item<2-> Powerful algorithms on trees available
+		\item<3-> Genetic operators easy to define on trees
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The Genome}
+	\framesubtitle{Tree example}
+	\begin{figure}[h]
+		\centering
+			\includegraphics[width=0.6\textheight]{images/Genetic_Program_Tree.png}
+		\caption{Tree representation of a mathematical expression}
+		\label{sg:fig:images_Genetic_Program_Tree}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Operations on a tree}
+	\framesubtitle{Genesis, crossover and mutations}
+	\begin{description}
+		\item<1->[Genesis] Syntactically valid random tree
+		\item<2->[Mutation] replace branch by random tree
+		\item<3->[Crossover] replace branch by branch of other tree
+	\end{description}
+\end{frame}
+
 
 % section the_genome (end)
 
@@ -174,6 +195,10 @@ keywordstyle=\color{keywordcolor},
 
 \section{Outlook, many more ideas} % (fold)
 \label{sg:sec:outlook_many_more_ideas}
+
+ Failure of aesthetic aspect may stimulate search for elemental parameters.
+
+
 
 % section outlook_many_more_ideas (end)
 

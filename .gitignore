@@ -25,3 +25,5 @@ sound_evolution/test.dot
 sound_evolution/test.jpg
 doc/_build
 doc/presentation1/pres1.synctex.gz
+doc/presentation1/pres1.bbl
+doc/presentation1/pres1.blg

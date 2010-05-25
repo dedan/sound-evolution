@@ -7,12 +7,12 @@ IMAGE_VIEWER = "eog"
 graph_filename = "graph.jpg"
 iterations = 0
 
-print '\n*** SOUND-EVOLUTION ***\n\nPress\n\n[0]\tto run a population\n[1]\tto try mutations\n[2]\tto try ficken'
+print '\n*** SOUND-EVOLUTION ***\n\nPress\n\n[1]\tto run option "population"\n[2]\tto run option "mutation"\n[3]\tto run option "make love"'
 
 a = int(raw_input('\n:- '))
 
 
-if a==2:
+if a==3:
     P = Population(4, Instrument, {'const_prob':0.7, 'max_children':3})
     while not raw_input('\nPress return to continue, anything else to quit:-  '):
         for n,i in enumerate(P.individuals):
@@ -26,10 +26,9 @@ if a==2:
                 csd.score('i 1 0 2')
                 csd.play()
             except OSError:
-                print 'skipping this iteration:- Csound crashed'
+                print '\nSkipping this iteration:- Csound crashed'
         n = int(raw_input('\nWhich sound did you like best: 1, 2, 3 or 4?:- '))-1   
         m = int(raw_input('Which sound did you like 2nd best: 1, 2, 3 or 4?:- '))-1  
-        print n, m, len(P.individuals)
         P.individuals[n].Fitness = 1
         P.individuals[m].Fitness = 1
         P.natural_selection(no_surviving=2) 
@@ -37,9 +36,9 @@ if a==2:
         iterations = iterations+1
         for i in P.individuals:
             i.Fitness = 0
-        print 'Generation #',(iterations+1),'has been created. Pupulation size: ',len(P.individuals),'.'
+        print 'Generation #',(iterations+1),'has been created. Population size: ',len(P.individuals),'.'
 
-elif a==1:
+elif a==2:
     P = Population(4, Instrument, {'const_prob':0.7, 'max_children':3})
     while not raw_input('\nPress return to continue, anything else to quit:-  '):
         for n,i in enumerate(P.individuals):
@@ -59,9 +58,9 @@ elif a==1:
         iterations = iterations+1
         for i in P.individuals:
             i.Fitness = 0
-        print '\nMutating...Generation #',(iterations+1), 'is born.'
+        print '\nMutating...Generation #',(iterations+1), 'has been created.'
 
-elif a==0: 
+elif a==1: 
     P = Population(4, Instrument, {'const_prob':0.7, 'max_children':3})
     while not raw_input('\nPress return to continue, anything else to quit:-  '):
         for n,i in enumerate(P.individuals):
@@ -102,9 +101,9 @@ elif a==0:
         for i in P.individuals:
             i.Fitness = 0
             print "Assigning fitnesses.."
-        print 'This is generation #',(iterations+1),', population size is',len(P.individuals),'.'
+        print 'Generation #',(iterations+1),'has been created. Population size is',len(P.individuals),'.'
 
 else:
     print "Dumbass, option unknown."
     
-print 'Leaving Sound-Evolution..'
+print 'Leaving Sound-Evolution...'

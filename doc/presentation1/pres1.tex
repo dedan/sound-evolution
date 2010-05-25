@@ -50,7 +50,7 @@ keywordstyle=\color{keywordcolor},
 
 \AtBeginSection[]{
 	\begin{frame}%<beamer>
-		\frametitle{outline}
+		\frametitle{Outline}
 		\tableofcontents[currentsection]
 	\end{frame}
 }
@@ -60,22 +60,44 @@ keywordstyle=\color{keywordcolor},
 
 \frame{\titlepage}
 
-\section*{Outline}
-\begin{frame}
-  \frametitle{Outline}
-  \tableofcontents[pausesections]
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Duncan lutscht Schwaenze}
-	\framesubtitle{in der Hoelle}
-	
-\end{frame}
+% \section*{Outline}
+% \begin{frame}
+%   \frametitle{Outline}
+%   \tableofcontents[pausesections]
+% \end{frame}
 
 
 \section{Background} % (fold)
 \label{sg:sec:background}
+
+\subsubsection{Project Management} % (fold)
+\label{sg:ssub:architecture_and_project_management}
+
+\begin{frame}
+	\frametitle{Project management}
+	\framesubtitle{Github}
+	
+	\begin{itemize}
+		\item<1-> git for version control
+		\item<2-> Issue tracker
+		\item<3-> Wiki
+		\item<4-> demo: \href{http://github.com/buzz/sound-evolution}{link to project on github.com}
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}
+	\frametitle{Project management}
+	\framesubtitle{Test driven}
+	
+	\begin{itemize}
+		\item<1-> Interfaces and modules first specified in tests
+		\item<2-> Nosetests used as testing framework
+	\end{itemize}
+	
+\end{frame}
+
+% subsubsection architecture_and_project_management (end)
 
 \subsubsection{GP in general} % (fold)
 \label{sg:ssub:gp_in_general}
@@ -178,6 +200,9 @@ keywordstyle=\color{keywordcolor},
 \section{The genome} % (fold)
 \label{sg:sec:the_genome}
 
+\subsection{Trees and basic operations} % (fold)
+\label{sg:ssub:trees_and_basic_operations}
+
 \begin{frame}
 	\frametitle{The Genome}
 	\framesubtitle{Tree structure}
@@ -209,11 +234,35 @@ keywordstyle=\color{keywordcolor},
 	\end{description}
 \end{frame}
 
+% subsubsection trees_and_basic_operations (end)
+
+\subsection{From genotype to phenotype} % (fold)
+\label{sg:sub:from_genotype_to_phenotype}
+
+\begin{frame}
+	\frametitle{From genotype to phenotype}
+	\framesubtitle{How to encode sound?}
+	
+	\begin{itemize}
+		\item<1-> basic building blocks (oscillators, envelopes)
+	\end{itemize}
+	
+\end{frame}
+
+% subsection from_genotype_to_phenotype (end)
 
 % section the_genome (end)
 
 
 \section{Implementation} % (fold)
+
+\begin{frame}
+	\frametitle{Graph of architecture}
+	\framesubtitle{}
+	blackboard..
+\end{frame}
+
+
 \begin{frame}
 	\frametitle{Creating/ Changing/ Evolving Sounds}
 	\begin{itemize}

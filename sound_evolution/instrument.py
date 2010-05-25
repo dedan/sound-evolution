@@ -203,7 +203,7 @@ class Instrument(object):
         graph.dot(f)
         f.close()
         os.system('dot -Tjpg %(dot)s -o %(jpg)s' %{"dot": dot_filename, "jpg": jpg_filename})
-        print "Graph was generated in file '%s'." %jpg_filename
+        #print "Graph was generated in file '%s'." %jpg_filename
 
     @classmethod
     def random(cls, **keywords):
@@ -376,8 +376,7 @@ if __name__ == '__main__':
     csd.orchestra(i)
     csd.score('i 1 0 2')
     csd.play()
-    print i.to_json()
-    print i.to_instr()
-    
+    i.to_graph()
+    os.system('eog graph.jpg')
        
         

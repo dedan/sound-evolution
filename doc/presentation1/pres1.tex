@@ -48,10 +48,24 @@ keywordstyle=\color{keywordcolor},
 \beamerdefaultoverlayspecification{<1->}
 
 
+\AtBeginSection[]{
+	\begin{frame}%<beamer>
+		\frametitle{outline}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+
 
 \begin{document}
 
 \frame{\titlepage}
+
+\section*{Outline}
+\begin{frame}
+  \frametitle{Outline}
+  \tableofcontents[pausesections]
+\end{frame}
+
 
 \begin{frame}
 	\frametitle{Duncan lutscht Schwaenze}
@@ -62,6 +76,9 @@ keywordstyle=\color{keywordcolor},
 
 \section{Background} % (fold)
 \label{sg:sec:background}
+
+\subsubsection{GP in general} % (fold)
+\label{sg:ssub:gp_in_general}
 
 \begin{frame}
 	\frametitle{Genetic algorithms}
@@ -75,32 +92,57 @@ keywordstyle=\color{keywordcolor},
 		\item<3-> main problem often to find and design a fitness function
 	\end{itemize}
 \end{frame}
+% subsubsection gp_in_general (end)
 
-% \item<4-> Random element may produces ingenious/ unexpected results
 
+\subsubsection{Inspiration for the Project} % (fold)
+\label{sg:ssub:inspiration_for_the_project}
 
 \begin{frame}
-	\frametitle{inspiration}
+	\frametitle{Inspiration}
 	\framesubtitle{GE in art}
 	
 	\begin{itemize}
-		\item<1-> synthesizer parameter fitting
-		\item<2-> image approximation (compression)
-		\item<3-> picbreeder
+		\item<1-> Synthesizer parameter fitting
+		\item<2-> Image approximation (compression)
+		\item<3-> Picbreeder
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{inspiration}
-	\framesubtitle{synthesizer parameter fitting}
+	\frametitle{Inspiration}
+	\framesubtitle{Synthesizer parameter fitting}
 
-	even if you know that a certain model is capable of performing a sound
-	it might be hard to find the right parameters.
+	\begin{itemize}
+		\item<1-> even if you know that a certain model is capable of performing a sound
+		it might be hard to find the right parameters
+		\item<2-> parameters could be found by using GP
+		\item<3-> project website: \href{http://www.batuhanbozkurt.com/news/naturetoolkit-update-genetic-algorithms-and-parameter-estimation-for-supercollider}{www.batuhanbozkurt.com}
+		\item<4-> \href{http://vimeo.com/7908757}{video at around 5:20}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Inspiration}
+	\framesubtitle{Image approximation (compression)}
 	
-	parameters could be found
+	\begin{itemize}
+		\item<1-> demo on: \href{http://alteredqualia.com/visualization/evolve/}{alteredqualia.com}
+		\item<2-> gallery on: \href{http://rogeralsing.com/2008/12/11/genetic-gallery/}{rogeralsing.com}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Inspiration}
+	\framesubtitle{Picbreeder}
+	
+	Evolution of images by using people as a fitness function.
+	\\
+	\href{http://picbreeder.org/}{http://picbreeder.org/} 
 \end{frame}
 
 
+% subsubsection inspiration_for_the_project (end)
 % section background (end)
 
 

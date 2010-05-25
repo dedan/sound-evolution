@@ -16,9 +16,9 @@
 \hypersetup{pdfpagelabels=true}
 
 \lstset{ 
-language=Python,
+language=C,
 breaklines=true,   
-basicstyle=\ttfamily,
+basicstyle=\scriptsize,
 keywordstyle=\color{keywordcolor},
         commentstyle={\color{commentcolor}\itshape},
         stringstyle={\color{stringcolor}\underbar},
@@ -243,11 +243,87 @@ keywordstyle=\color{keywordcolor},
 	\frametitle{From genotype to phenotype}
 	\framesubtitle{How to encode sound?}
 	
+	The CSound language
+
 	\begin{itemize}
 		\item<1-> basic building blocks (oscillators, envelopes)
+		\item<2-> can easily be represented as a tree
 	\end{itemize}
-	
 \end{frame}
+
+
+\begin{frame}[fragile]
+	\frametitle{From genotype to phenotype}
+	\framesubtitle{How to encode sound? Examples:}
+	
+	\begin{columns}[t] 
+		\column{.5\textwidth} 
+		\begin{lstlisting}
+			oscil 0.4, 9534.61, 1
+		\end{lstlisting}
+		
+		\column{.5\textwidth} 
+		\begin{figure}[h]
+			\centering
+				\includegraphics[width=0.8\textwidth]{images/one_oscil.jpg}
+			\caption{one oscillator}
+			\label{sg:fig:images_one_oscil}
+		\end{figure}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{From genotype to phenotype}
+	\framesubtitle{How to encode sound? Examples:}
+	
+	\begin{columns}[t] 
+		\column{.5\textwidth} 
+		\begin{lstlisting}
+		k0	oscil	0.15, 14882.44, 1
+		k1	rand	k0
+		a2	lfo	k1, 10.46, 2.65
+		a3	clip	a2, 0, 1
+		out	a3		\end{lstlisting}
+		\column{.5\textwidth} 
+		\begin{figure}[h]
+			\centering
+				\includegraphics[width=0.8\textwidth]{images/lfo_rand_oscil.jpg}
+			\caption{one oscillator}
+			\label{sg:fig:images_one_oscil}
+		\end{figure}
+	\end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+	\frametitle{From genotype to phenotype}
+	\framesubtitle{How to encode sound? Examples:}
+	
+	\begin{columns}[t] 
+		\column{.5\textwidth} 
+		\begin{lstlisting}
+		a0	phasor	16271.99
+		k1	oscil	0.95, 19719.78, 1
+		a2	=	k1+57.88
+		k3	rand	0.69
+		k4	=	28.91+70.50
+		a5	mpulse	k3, k4
+		a6	=	a5/25.29
+		a7	oscil	a2, a6, 1
+		a8	=	47.41*a0*6.67*a7
+		a9	clip	a8, 0, 1
+		out	a9
+		\end{lstlisting}
+		
+		\column{.5\textwidth} 
+		\begin{figure}[h]
+			\centering
+				\includegraphics[width=0.8\textwidth]{images/large_graph.jpg}
+			\caption{one oscillator}
+			\label{sg:fig:images_one_oscil}
+		\end{figure}
+	\end{columns}
+\end{frame}
+
 
 % subsection from_genotype_to_phenotype (end)
 

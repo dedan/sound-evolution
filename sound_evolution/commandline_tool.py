@@ -1,49 +1,27 @@
 from instrument import *
 from genetics import Individual 
 from genetics import Population
+import os
 
-
-
-
+IMAGE_VIEWER = "open"
+graph_filename = "graph.jpg"
 iterations = 0
 
 a = int(raw_input('To run a population press 2, to try mutations press 1, to try ficken press 0:- '))
 
-if a==1:
-    P = Population(4, Instrument, {'const_prob':0.7, 'max_children':3})
-    while not raw_input('press return to continue or x to quit mutate:-  '):
-        for i in P.individuals:
-            #try:
-                csd = csound_adapter.CSD()
-                csd.orchestra(i)
-                csd.score('i 1 0 2')
-                csd.play()
-                print i.to_json()
-                print i.to_instr()
-         #   except OSError as (errno, strerror):
-          #      print "O/S error({0}): {1}".format(errno, strerror)
-           #     print 'skipping this iteration:- Csound crashed'
-        n = int(raw_input('which did you like best: 1,2,3 or 4?:- '))-1    
-        P.individuals[n].Fitness = 1
-        P.natural_selection(no_surviving=1) 
-        P.next_generation(1.0, 0.0)
-        P.next_generation(1.0, 0.0)
-        iterations = iterations+1
-        for i in P.individuals:
-            i.Fitness = 0
-        print 'This is iteration number',iterations
 
-elif a==0:
-    P = Population(3, Instrument, {'const_prob':0.7, 'max_children':3})
+if a==0:
+    P = Population(4, Instrument, {'const_prob':0.7, 'max_children':3})
     while not raw_input('press return to continue or x to quit ficken:-  '):
         for i in P.individuals:
             try:
+                print i.to_instr()
+                i.to_graph(graph_filename)
+                os.system("%s %s" % (IMAGE_VIEWER, graph_filename))
                 csd = csound_adapter.CSD()
                 csd.orchestra(i)
                 csd.score('i 1 0 2')
                 csd.play()
-                print i.to_json()
-                print i.to_instr()
             except OSError:
                 print 'skipping this iteration:- Csound crashed'
         n = int(raw_input('which did you like best: 1,2 or 3?:- '))-1   
@@ -62,17 +40,40 @@ elif a==0:
             i.Fitness = 0
             print "assigning fitnesses"
         print 'This is iteration number',iterations,'length is',len(P.individuals)
-else: 
-    P = Population(3, Instrument, {'const_prob':0.7, 'max_children':3})
+
+elif a==1:
+    P = Population(4, Instrument, {'const_prob':0.7, 'max_children':3})
+    while not raw_input('press return to continue or x to quit mutate:-  '):
+        for i in P.individuals:
+            i.to_graph(graph_filename)
+            os.system("%s %s" % (IMAGE_VIEWER, graph_filename))
+            print i.to_instr()
+            csd = csound_adapter.CSD()
+            csd.orchestra(i)
+            csd.score('i 1 0 2')
+            csd.play()
+        n = int(raw_input('which did you like best: 1,2,3 or 4?:- '))-1    
+        P.individuals[n].Fitness = 1
+        P.natural_selection(no_surviving=1) 
+        P.next_generation(1.0, 0.0)
+        P.next_generation(1.0, 0.0)
+        iterations = iterations+1
+        for i in P.individuals:
+            i.Fitness = 0
+        print 'This is iteration number',iterations
+
+elif a==2: 
+    P = Population(4, Instrument, {'const_prob':0.7, 'max_children':3})
     while not raw_input('press return to continue or x to quit Population run:-  '):
         for i in P.individuals:
             try:
+                i.to_graph(graph_filename)
+                os.system("%s %s" % (IMAGE_VIEWER, graph_filename))
+                print i.to_instr()
                 csd = csound_adapter.CSD()
                 csd.orchestra(i)
                 csd.score('i 1 0 5')
                 csd.play()
-                print i.to_json()
-                print i.to_instr()
             except OSError:
                 print 'skipping this iteration:- Csound crashed'
         n = int(raw_input('which did you like best: 1,2,3 or 4?:- '))-1   
@@ -103,6 +104,5 @@ else:
             print "assigning fitnesses"
         print 'This is iteration number',iterations,'length is',len(P.individuals)
 
-       
-
-
+else:
+    print "option unknown"
